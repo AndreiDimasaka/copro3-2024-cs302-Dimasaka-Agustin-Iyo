@@ -42,6 +42,15 @@ namespace DinoPetCharCreation
                     case "Forest":
                         Console.WriteLine(Choices.triassicBreeds[0]);
                         break;
+                    case "Arid":
+                        Console.WriteLine(Choices.triassicBreeds[1]);
+                        break;
+                    case "Mountains":
+                        Console.WriteLine(Choices.triassicBreeds[2]);
+                        break;
+                    case "Beach":
+                        Console.WriteLine(Choices.triassicBreeds[4]);
+                        break;
                     default:
                         Console.WriteLine("End");
                         break;
