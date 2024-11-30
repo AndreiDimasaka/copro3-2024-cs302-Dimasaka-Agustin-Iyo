@@ -7,4 +7,23 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="TUI\Program.cs" />
+      <Compile Remove="TUI\bin\**" />
+      <Compile Remove="TUI\obj\**" />
+      <Compile Remove="TUI\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="TUI\bin\**" />
+      <EmbeddedResource Remove="TUI\obj\**" />
+      <EmbeddedResource Remove="TUI\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="TUI\bin\**" />
+      <None Remove="TUI\obj\**" />
+      <None Remove="TUI\**" />
+    </ItemGroup>
+
 </Project>
