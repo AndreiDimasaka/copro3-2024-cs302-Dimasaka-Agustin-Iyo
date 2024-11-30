@@ -10,7 +10,7 @@ namespace DinoPetCharCreation
         {
             Console.WriteLine("Welcome to DinoPetCharCreation");
             DisplayMethod(Choices.era);
-            choiceChecker(int.Parse(Console.ReadLine()));
+            choiceChecker(InputRead());
         }
 
         static void DisplayMethod(string[] arr)
@@ -24,16 +24,23 @@ namespace DinoPetCharCreation
             }
         }
 
-        static void choiceChecker(int input)
+        static string InputRead()
         {
-            if (input == 1)
+            return Choices.habitat[int.Parse(Console.ReadLine()) - 1];
+        }
+        static void choiceChecker(string input)
+        {
+            if (input == "Triassic")
             {
                 DisplayMethod(Choices.habitat);
-                string habitat = Choices.habitat[int.Parse(Console.ReadLine()) - 1];
-                switch (habitat)
+                
+                switch (InputRead())
                 {
                     case "Ocean":
                         Console.WriteLine(Choices.triassicBreeds[3]);
+                        break;
+                    case "Forest":
+                        Console.WriteLine(Choices.triassicBreeds[0]);
                         break;
                     default:
                         Console.WriteLine("End");
