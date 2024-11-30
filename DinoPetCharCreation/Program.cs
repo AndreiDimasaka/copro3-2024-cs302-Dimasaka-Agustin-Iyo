@@ -8,6 +8,7 @@ namespace DinoPetCharCreation
         static StringBuilder sb = new StringBuilder();
         public static void Main()
         {
+            Console.WriteLine("Testing");
             Console.WriteLine("Welcome to DinoPetCharCreation");
             DisplayMethod(Choices.era);
             choiceChecker(InputRead());
