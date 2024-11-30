@@ -55,6 +55,55 @@ namespace DinoPetCharCreation
                         Console.WriteLine("End");
                         break;
                 }
+
+            }
+            else if (input == "Jurassic")
+            {
+                switch (InputRead())
+                {
+                    case "Ocean":
+                        Console.WriteLine(Choices.jurassicBreeds[0]);
+                        break;
+                    case "Forest":
+                        Console.WriteLine(Choices.jurassicBreeds[1]);
+                        break;
+                    case "Arid":
+                        Console.WriteLine(Choices.jurassicBreeds[2]);
+                        break;
+                    case "Mountains":
+                        Console.WriteLine(Choices.jurassicBreeds[3]);
+                        break;
+                    case "Beach":
+                        Console.WriteLine(Choices.jurassicBreeds[3]);
+                        break;
+                    default:
+                        Console.WriteLine("End");
+                        break;
+                }
+            }
+            else if (input == "Cretaceous")
+            {
+                switch (InputRead())
+                {
+                    case "Ocean":
+                        Console.WriteLine(Choices.cretaceousBreeds[0]);
+                        break;
+                    case "Forest":
+                        Console.WriteLine(Choices.cretaceousBreeds[1]);
+                        break;
+                    case "Arid":
+                        Console.WriteLine(Choices.cretaceousBreeds[2]);
+                        break; 
+                    case "Mountains":
+                        Console.WriteLine(Choices.cretaceousBreeds[3]);
+                        break;
+                    case "Beach":
+                        Console.WriteLine(Choices.cretaceousBreeds[4]);
+                        break;
+                    default:
+                        Console.WriteLine("End");
+                        break;
+                }
             }
         }
 
@@ -66,6 +115,8 @@ namespace DinoPetCharCreation
 
             public static string[] era = {"Triassic", "Jurassic", "Cretaceous"};
             public static string[] habitat = { "Ocean", "Forest", "Arid", "Mountains", "Beach" };
+            Dictionary<string, string> triassic = new Dictionary<string, string>();
+
             public static string[] triassicBreeds = {"Eoraptor", "Herrerasaurus", "Plateosaurus", "Ichthyosaurus", "Pterosaurus"};
             public static string[] jurassicBreeds = {"Brachiosaurus", "Pterodactyl", "Herrerasaurus", "Stegosaurus"};
             public static string[] cretaceousBreeds = {"Triceratops", "Tyrannosaurus", "Brachiosaurus", "Pterodactyl", "Tylosaurus", "Oviraptor", "Troodon", "Ankylosaurus"};
