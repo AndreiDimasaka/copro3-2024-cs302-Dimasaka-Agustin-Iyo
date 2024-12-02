@@ -1,6 +1,6 @@
 namespace DinoPetCharCreation;
 
-public class DinoBuilder
+public abstract class DinoBuilder
 {
     
 }
