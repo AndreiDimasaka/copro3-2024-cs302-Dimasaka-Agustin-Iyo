@@ -22,7 +22,6 @@ namespace DinoPetCharCreation
             string era = func.InputRead(data.era, 0);
             string dinosaurBreed = func.PickDinosaur(era);
             func.DisplayMethod(data.gender);
-            Console.Write("Pick a gender: ");
             string gender = func.InputRead(data.gender, 0);
             func.DisplayMethod(data.nature);
             Console.Write("Pick a nature: ");
