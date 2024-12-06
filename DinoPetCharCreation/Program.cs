@@ -12,16 +12,16 @@ namespace DinoPetCharCreation
         {
             DataArray data = new DataArray();
             Methods func = new Methods();
+            Start:
             Console.WriteLine("Welcome to DinoPetCharCreation");
             Console.WriteLine("Do you wish to skip the story? Type 'n'");
             if (Console.ReadLine().ToLower() != "n")
             {
                 func.showGameStory();
             }
-            Start:
             func.DisplayMethod(data.era);
             Console.Write("Choose an era: ");
-            string era = func.InputRead(data.era, 0);
+            string era = func.InputRead(data.era, 0);   
             TriassicDino triassicdino = new TriassicDino();
             JurassicDino jurassicdino = new JurassicDino();
             CretaceousDino cretaceousdino = new CretaceousDino();
@@ -72,14 +72,51 @@ namespace DinoPetCharCreation
                     if (build_choice.ToLower() == "y")
                     {
                         triassicdino.BuildDinosaur();
+                        foreach (KeyValuePair<string, int> elem in data.traits)
+                        {
+                            Console.WriteLine($"{elem.Key}: {elem.Value}");
+                        }
+                        End1:
+                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        string end = Console.ReadLine();
+                        if (end.ToLower() == "n")
+                        {
+                            goto Start;
+                        }
+                        else if (end.ToLower() == "y")
+                        {
+                            Console.Clear();
+                            func.showCredits();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Try again.");
+                            goto End1;
+                        }
                     }
                     else if (build_choice.ToLower() == "n")
                     {
-                        goto Start;
+                        End2:
+                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        string end = Console.ReadLine();
+                        if (end.ToLower() == "n")
+                        {
+                            goto Start;
+                        }
+                        else if (end.ToLower() == "y")
+                        {
+                            Console.Clear();
+                            func.showCredits();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Try again.");
+                            goto End2;
+                        }
                     }
                     else
                     {
-                        goto Build;
+                        goto cBuild;
                     }
                     break;
                 
@@ -132,14 +169,47 @@ namespace DinoPetCharCreation
                         {
                             Console.WriteLine($"{elem.Key}: {elem.Value}");
                         }
+                        End1:
+                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        string end = Console.ReadLine();
+                        if (end.ToLower() == "n")
+                        {
+                            goto Start;
+                        }
+                        else if (end.ToLower() == "y")
+                        {
+                            Console.Clear();
+                            func.showCredits();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Try again.");
+                            goto End1;
+                        }
                     }
                     else if (build_choice.ToLower() == "n")
                     {
-                        goto Start;
+                        End2:
+                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        string end = Console.ReadLine();
+                        if (end.ToLower() == "n")
+                        {
+                            goto Start;
+                        }
+                        else if (end.ToLower() == "y")
+                        {
+                            Console.Clear();
+                            func.showCredits();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Try again.");
+                            goto End2;
+                        }
                     }
                     else
                     {
-                        goto jBuild;
+                        goto cBuild;
                     }
                     break;
                 case "Cretaceous":
@@ -191,10 +261,43 @@ namespace DinoPetCharCreation
                         {
                             Console.WriteLine($"{elem.Key}: {elem.Value}");
                         }
+                        End1:
+                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        string end = Console.ReadLine();
+                        if (end.ToLower() == "n")
+                        {
+                            goto Start;
+                        }
+                        else if (end.ToLower() == "y")
+                        {
+                            Console.Clear();
+                            func.showCredits();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Try again.");
+                            goto End1;
+                        }
                     }
                     else if (build_choice.ToLower() == "n")
                     {
-                        goto Start;
+                        End2:
+                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        string end = Console.ReadLine();
+                        if (end.ToLower() == "n")
+                        {
+                            goto Start;
+                        }
+                        else if (end.ToLower() == "y")
+                        {
+                            Console.Clear();
+                            func.showCredits();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Try again.");
+                            goto End2;
+                        }
                     }
                     else
                     {

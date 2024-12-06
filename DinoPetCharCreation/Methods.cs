@@ -68,5 +68,11 @@ public class Methods
             "\"Relic hunters,\" as they are called, now explore these ancient ruins to uncover the secrets of a bygone era. " +
             "These explorers challenge the unknown in the hopes of finding fame, fortune, or maybe even the truth.");
         }
-        
+
+        public void showCredits()
+        {
+            Console.WriteLine($"Documentation   Don Isaac Agustin" +
+                              $"\nCoderist      Andrei Dimasaka" +
+                              $"\nMoral Support Angelo Iyo");
+        }
     }
