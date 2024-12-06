@@ -17,7 +17,7 @@ public struct DataArray
     internal  string[] facialFeatures = { "Beak", "Horns", "Frills", "Sharp Teeth", "Spikes", "Flat Teeth"};
     internal  string[] tailType = {"Spiked", "Clubbed", "Long", "Normal", "Short" };
     internal  string[] behavior = { "Hunter", "Defender", "Worker", "Scout", "Leader" };
-
+    internal Dictionary<string, int> traits = new Dictionary<string, int>();
     public DataArray()
     {
     }

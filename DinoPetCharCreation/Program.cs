@@ -6,49 +6,70 @@ namespace DinoPetCharCreation
 {
     public class Menu
     {
-        static Methods func = new Methods();
-
+        
         public static void Main()
         {
             DataArray data = new DataArray();
+            Methods func = new Methods();
+            TriassicDino triassicdino = new TriassicDino();
             Console.WriteLine("Welcome to DinoPetCharCreation");
             Console.WriteLine("Do you wish to skip the story? (y/n)");
             if (Console.ReadLine().ToLower() == "n")
             {
                 func.showGameStory();
             }
-
-            Console.Write("Pick an era: ");
+            Start:
+            func.DisplayMethod(data.era);
+            Console.Write("Choose an era: ");
             string era = func.InputRead(data.era, 0);
-            string dinosaurBreed = func.PickDinosaur(era);
-            func.DisplayMethod(data.gender);
-            string gender = func.InputRead(data.gender, 0);
-            func.DisplayMethod(data.nature);
-            Console.Write("Pick a nature: ");
-            string nature = func.InputRead(data.nature, 0);
-            func.DisplayMethod(data.skinColor);
-            Console.Write("Pick a skin color: ");
-            string skinColor = func.InputRead(data.skinColor, 0);
-            func.DisplayMethod(data.skinPattern);
-            Console.Write("Pick a skin pattern: ");
-            string skinPattern = func.InputRead(data.skinPattern, 0);
-            // FavoriteFood randomizer
-            func.DisplayMethod(data.skinTexture);
-            Console.Write("Pick a skin texture: ");
-            string skinTexture = func.InputRead(data.skinTexture, 0);
-            func.DisplayMethod(data.bodyFeatures);
-            Console.Write("Pick a body feature: ");
-            string bodyFeatures = func.InputRead(data.bodyFeatures, 0);
-            func.DisplayMethod(data.facialFeatures);
-            Console.Write("Pick a facial feature: ");
-            string facialFeatures = func.InputRead(data.facialFeatures, 0);
-            func.DisplayMethod(data.tailType);
-            Console.Write("Pick a tail type: ");
-            string tailType = func.InputRead(data.tailType, 0);
-            func.DisplayMethod(data.behavior);
-            Console.Write("Pick a behavior: ");
-            string behavior = func.InputRead(data.behavior, 0);
+            switch (era)
+            {
+                case "Triassic":
+                    triassicdino.Era = era;
+                    triassicdino.Habitat();
+                    triassicdino.Breed();
+                    triassicdino.Behavior();
+                    triassicdino.Gender();
+                    triassicdino.Nature();
+                    func.DisplayMethod(data.skinColor);
+                    Console.Write("Choose a color:");
+                    string color1 = func.InputRead(data.skinColor, 0);
+                    Console.Write("Do you wish to add another color to your dinosaur? (y/n): ");
+                    string choice = Console.ReadLine();
+                    if (choice.ToLower() == "y")
+                    {
+                        Console.Write("Choose a color:");
+                        string color2 = func.InputRead(data.skinColor, 0);
+                        triassicdino.SkinColor(color1, color2);
+                    }
+                    else
+                    {
+                        triassicdino.SkinColor(color1);
+                    }
+                    
+                    triassicdino.SkinPattern();
+                    triassicdino.FavoriteFood();
+                    triassicdino.SkinTexture();
+                    triassicdino.BodyFeatures();
+                    triassicdino.FacialFeatures();
+                    triassicdino.TailType();
+                    triassicdino.Behavior();
+                    triassicdino.TraitsAmount();
+                    Console.Write("Enter a name for your dinosaur: ");
+                    triassicdino.Name = Console.ReadLine();
+                    Console.Write("Build this dinosaur? (y/n): ");
+                    string build_choice =  Console.ReadLine();
+                    if (build_choice.ToLower() == "y")
+                    {
+                        triassicdino.BuildDinosaur();
+                    }
+                    else if (build_choice.ToLower() == "n")
+                    {
+                        goto Start;
+                    }
 
+                    break;
+            }
 
 
         }

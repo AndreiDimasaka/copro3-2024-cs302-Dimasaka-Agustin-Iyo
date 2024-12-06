@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace DinoPetCharCreation;
 
 public abstract class DinoBuilder
@@ -10,6 +12,7 @@ public abstract class DinoBuilder
     public abstract string Nature();
     public abstract string SkinColor(string color);
     public abstract string SkinPattern();
+    public abstract string SkinTexture();
     public abstract string FavoriteFood();
     public abstract string BodyFeatures();
     public abstract string FacialFeatures();
@@ -20,6 +23,7 @@ public abstract class DinoBuilder
 }
 public interface DinoBuild
 {
+    IEnumerable<int> TraitsAmount();
     bool hasWing();
     bool hasFins();
     bool hasClaw();
@@ -27,8 +31,8 @@ public interface DinoBuild
 
 public class TriassicDino : DinoBuilder,DinoBuild
 {
-    private DataArray data;
-    private Methods method;
+    private DataArray data = new DataArray();
+    private Methods method = new Methods();
     private string _era;
     private string _habitat;
     private string _breed;
@@ -36,6 +40,7 @@ public class TriassicDino : DinoBuilder,DinoBuild
     private string _nature;
     private string _skinColor1;
     private string _skinPattern;
+    private string _skinTexture;
     private string _favoriteFood;
     private string _bodyFeatures;
     private string _facialFeatures;
@@ -45,35 +50,40 @@ public class TriassicDino : DinoBuilder,DinoBuild
     private bool _wing;
     private bool _fins;
     private bool _claw;
-
-    public TriassicDino(string era, string habitat, string breed, string gender, string nature, string skinColor1, string skinPattern, string favoriteFood, string bodyFeatures, string facialFeatures, string tailType
-        , string behavior, string name)
+    private StringBuilder sb = new StringBuilder();
+    public TriassicDino()
     {
-        Console.WriteLine($"Your dinosaur is a {_breed = breed}");
-        Console.WriteLine($"Period where your dinosaur lived in{_era = era}");
-        Console.WriteLine($"Primarily stays at {_habitat = habitat}");
-        Console.WriteLine($"Gender is a {_gender = gender} ");
-        Console.WriteLine($"Its nature is {_nature = nature} ");
-        Console.WriteLine($"Skin color(s): {_skinColor1 = skinColor1} ");
-        Console.WriteLine($"Skin pattern is a {_skinPattern = skinPattern} ");
-        Console.WriteLine($"Its favorite food are {_favoriteFood = favoriteFood} ");
-        Console.WriteLine($"Its body features: {_bodyFeatures = bodyFeatures} ");
-        if (_claw)
+        
+    }
+    public void BuildDinosaur()
+    {
+        Console.WriteLine("Build Succeeded");
+        Console.WriteLine($"Your dinosaur is a {_breed}");
+        Console.WriteLine($"Period where your dinosaur lived in {_era}");
+        Console.WriteLine($"Primarily stays at {_habitat}");
+        Console.WriteLine($"Gender is a {_gender} ");
+        Console.WriteLine($"Its nature is {_nature} ");
+        Console.WriteLine($"Skin color(s): {_skinColor1} ");
+        Console.WriteLine($"Skin pattern is a {_skinPattern} ");
+        Console.WriteLine($"The texture of its skin is {_skinTexture } ");
+        Console.WriteLine($"Its favorite food are {_favoriteFood} ");
+        Console.WriteLine($"Its body features: {_bodyFeatures} ");
+        if (hasClaw())
         {
             Console.WriteLine("It has sharp claws");
         } 
-        if (_wing)
+        if (hasWing())
         {
             Console.WriteLine("It is a winged dinosaur");
         } 
-        if (_fins)
+        if (hasFins())
         {
             Console.WriteLine("It is a marine dinosaur");
         }
-        Console.WriteLine($"Has a facial features: {_facialFeatures = facialFeatures} ");
-        Console.WriteLine($"Its tail is {_tailType = tailType} ");
-        Console.WriteLine($"Its behavior is {_behavior = behavior} ");
-        Console.WriteLine($"You named it {_name = name} ");
+        Console.WriteLine($"Its facial feature is a {_facialFeatures} ");
+        Console.WriteLine($"Its tail is {_tailType} ");
+        Console.WriteLine($"Its behavior is {_behavior} ");
+        Console.WriteLine($"You named it {_name} ");
     }
     public override string Era
     {
@@ -238,6 +248,13 @@ public class TriassicDino : DinoBuilder,DinoBuild
         return _skinPattern = method.InputRead(data.skinPattern, 0);
     }
 
+    public override string SkinTexture()
+    {
+        method.DisplayMethod(data.skinTexture);
+        Console.Write("Pick a skin texture: ");
+        return _skinTexture = method.InputRead(data.skinPattern, 0);
+    }
+
     public override string FavoriteFood()
     {
         switch (this._breed)
@@ -287,6 +304,54 @@ public class TriassicDino : DinoBuilder,DinoBuild
     public override string Name
     {
         get => _name; set => _name = value;
+    }
+
+    public IEnumerable<int> TraitsAmount()
+    {
+        bool repeat1 = false;
+        int add = 0;
+        int total = 0;
+        data.traits.Add("Speed", 0);
+        data.traits.Add("Strength", 0);
+        data.traits.Add("Intelligence", 0);
+        data.traits.Add("Dexterity", 0);
+        data.traits.Add("Toughness", 0);
+        
+        Console.WriteLine();
+        Console.WriteLine("Allocate 40 points to your dinosaur stats, Max per stat is 20");
+        sb.Clear();
+        Console.WriteLine(sb.Append('-', 32));
+        Console.WriteLine();    
+        foreach (KeyValuePair<string, int> elem in data.traits)
+        {
+            Console.WriteLine($"{elem.Key}: {elem.Value}");
+        }
+        foreach (KeyValuePair<string, int> elem in data.traits)
+        {
+            Console.Write($"{elem.Key}: ");
+            do
+            {
+                try
+                {
+                    add = int.Parse(Console.ReadLine());
+                    if (add < 0 | add > 20)
+                    {
+                                Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
+                                repeat1 = true;
+                    }
+                    else if (total > 41)
+                    {
+                        Console.Write($"You can only allocate 40 points, Your remaining points are {total - 40}. Try again.");
+                    }
+                }
+                catch (FormatException)
+                {
+                            Console.WriteLine("Invalid input. Try again.");
+                            repeat1 = true;
+                }
+                yield return data.traits[elem.Key] = data.traits[elem.Key] + add;
+            }while (repeat1) ;  
+        }
     }
 
     public bool hasWing()
@@ -371,37 +436,44 @@ public class TriassicDino : DinoBuilder,DinoBuild
 }
 public class JurassicDino : DinoBuilder,DinoBuild
 {
-    private DataArray data;
-    private Methods method;
-    private string _era;
-    private string _habitat;
-    private string _breed;
-    private string _gender;
-    private string _nature;
-    private string _skinColor1;
-    private string _skinPattern;
-    private string _favoriteFood;
-    private string _bodyFeatures;
-    private string _facialFeatures;
-    private string _tailType;
-    private string _behavior;
-    private string _name;
-    private bool _wing;
-    private bool _fins;
-    private bool _claw;
+    private DataArray data = new DataArray();
+    private Methods method = new Methods();
+    private string _era { get; set; }
+    private string _habitat { get; set; }
+    private string _breed {get; set;}
+    private string _gender { get; set; }
+    private string _nature { get; set; }
+    private string _skinColor1 { get; set; }
+    private string _skinPattern { get; set; }
+    private string _skinTexture { get; set; }
+    private string _favoriteFood { get; set; }
+    private string _bodyFeatures { get; set; }    
+    private string _facialFeatures { get; set; }
+    private string _tailType { get; set; }
+    private string _behavior { get; set; }
+    private string _name { get; set; }
+    private bool _wing { get; set; }
+    private bool _fins { get; set; }
+    private bool _claw { get; set; }
+    private StringBuilder sb = new StringBuilder();
 
-    public JurassicDino(string era, string habitat, string breed, string gender, string nature, string skinColor1, string skinPattern, string favoriteFood, string bodyFeatures, string facialFeatures, string tailType
-        , string behavior, string name)
+    public JurassicDino()
     {
-        Console.WriteLine($"Your dinosaur is a {_breed = breed}");
-        Console.WriteLine($"Period where your dinosaur lived in{_era = era}");
-        Console.WriteLine($"Primarily stays at {_habitat = habitat}");
-        Console.WriteLine($"Gender is a {_gender = gender} ");
-        Console.WriteLine($"Its nature is {_nature = nature} ");
-        Console.WriteLine($"Skin color(s): {_skinColor1 = skinColor1} ");
-        Console.WriteLine($"Skin pattern is a {_skinPattern = skinPattern} ");
-        Console.WriteLine($"Its favorite food are {_favoriteFood = favoriteFood} ");
-        Console.WriteLine($"Its body features: {_bodyFeatures = bodyFeatures} ");
+        
+    }
+    public JurassicDino(string build)
+    {
+        Console.WriteLine(build);
+        Console.WriteLine($"Your dinosaur is a {_breed}");
+        Console.WriteLine($"Period where your dinosaur lived in{_era}");
+        Console.WriteLine($"Primarily stays at {_habitat}");
+        Console.WriteLine($"Gender is a {_gender} ");
+        Console.WriteLine($"Its nature is {_nature} ");
+        Console.WriteLine($"Skin color(s): {_skinColor1} ");
+        Console.WriteLine($"Skin pattern is a {_skinPattern} ");
+        Console.WriteLine($"The texture of its skin is {_skinTexture} ");
+        Console.WriteLine($"Its favorite food are {_favoriteFood} ");
+        Console.WriteLine($"Its body features: {_bodyFeatures} ");
         if (_claw)
         {
             Console.WriteLine("It has sharp claws");
@@ -414,10 +486,10 @@ public class JurassicDino : DinoBuilder,DinoBuild
         {
             Console.WriteLine("It is a marine dinosaur");
         }
-        Console.WriteLine($"Has a facial features: {_facialFeatures = facialFeatures} ");
-        Console.WriteLine($"Its tail is {_tailType = tailType} ");
-        Console.WriteLine($"Its behavior is {_behavior = behavior} ");
-        Console.WriteLine($"You named it {_name = name} ");
+        Console.WriteLine($"Has a facial features: {_facialFeatures} ");
+        Console.WriteLine($"Its tail is {_tailType} ");
+        Console.WriteLine($"Its behavior is {_behavior } ");
+        Console.WriteLine($"You named it {_name} ");
     }
     public override string Era
     {
@@ -573,6 +645,13 @@ public class JurassicDino : DinoBuilder,DinoBuild
         return _skinPattern = method.InputRead(data.skinPattern, 0);
     }
 
+    public override string SkinTexture()
+    {
+        method.DisplayMethod(data.skinTexture);
+        Console.Write("Pick a skin texture: ");
+        return _skinTexture = method.InputRead(data.skinTexture, 0);
+    }
+
     public override string FavoriteFood()
     {
         
@@ -621,6 +700,53 @@ public class JurassicDino : DinoBuilder,DinoBuild
     public override string Name
     {
         get => _name; set => _name = value;
+    }
+    public IEnumerable<int> TraitsAmount()
+    {
+        bool repeat1 = false;
+        int add = 0;
+        int total = 0;
+        data.traits.Add("Speed", 0);
+        data.traits.Add("Strength", 0);
+        data.traits.Add("Intelligence", 0);
+        data.traits.Add("Dexterity", 0);
+        data.traits.Add("Toughness", 0);
+        
+        Console.WriteLine();
+        Console.WriteLine("Allocate 40 points to your dinosaur stats, Max per stat is 20");
+        sb.Clear();
+        Console.WriteLine(sb.Append('-', 32));
+        Console.WriteLine();    
+        foreach (KeyValuePair<string, int> elem in data.traits)
+        {
+            Console.WriteLine($"{elem.Key}: {elem.Value}");
+        }
+        foreach (KeyValuePair<string, int> elem in data.traits)
+        {
+            Console.Write($"{elem.Key}: ");
+            do
+            {
+                try
+                {
+                    add = int.Parse(Console.ReadLine());
+                    if (add < 0 | add > 20)
+                    {
+                        Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
+                        repeat1 = true;
+                    }
+                    else if (total > 41)
+                    {
+                        Console.Write($"You can only allocate 40 points, Your remaining points are {total - 40}. Try again.");
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                    repeat1 = true;
+                }
+                yield return data.traits[elem.Key] = data.traits[elem.Key] + add;
+            }while (repeat1) ;  
+        }
     }
 
     public bool hasWing()
@@ -699,8 +825,8 @@ public class JurassicDino : DinoBuilder,DinoBuild
 
 public class CretaceousDino : DinoBuilder,DinoBuild
 {
-    private DataArray data;
-    private Methods method;
+    private DataArray data = new DataArray();
+    private Methods method = new Methods();
     private string _era;
     private string _habitat;
     private string _breed;
@@ -708,6 +834,7 @@ public class CretaceousDino : DinoBuilder,DinoBuild
     private string _nature;
     private string _skinColor1;
     private string _skinPattern;
+    private string _skinTexture;
     private string _favoriteFood;
     private string _bodyFeatures;
     private string _facialFeatures;
@@ -717,8 +844,13 @@ public class CretaceousDino : DinoBuilder,DinoBuild
     private bool _wing;
     private bool _fins;
     private bool _claw;
+    private StringBuilder sb = new StringBuilder();
 
-    public CretaceousDino(string era, string habitat, string breed, string gender, string nature, string skinColor1, string skinPattern, string favoriteFood, string bodyFeatures, string facialFeatures, string tailType
+    public CretaceousDino()
+    {
+        
+    }
+    public CretaceousDino(string era, string habitat, string breed, string gender, string nature, string skinColor1, string skinPattern, string skinTexture, string favoriteFood, string bodyFeatures, string facialFeatures, string tailType
         , string behavior, string name)
     {
         Console.WriteLine($"Your dinosaur is a {_breed = breed}");
@@ -728,6 +860,7 @@ public class CretaceousDino : DinoBuilder,DinoBuild
         Console.WriteLine($"Its nature is {_nature = nature} ");
         Console.WriteLine($"Skin color(s): {_skinColor1 = skinColor1} ");
         Console.WriteLine($"Skin pattern is a {_skinPattern = skinPattern} ");
+        Console.WriteLine($"The texture of its skin is {_skinTexture = skinTexture} ");
         Console.WriteLine($"Its favorite food are {_favoriteFood = favoriteFood} ");
         Console.WriteLine($"Its body features: {_bodyFeatures = bodyFeatures} ");
         if (_claw)
@@ -926,19 +1059,33 @@ public class CretaceousDino : DinoBuilder,DinoBuild
         return _skinPattern = method.InputRead(data.skinPattern, 0);
     }
 
+    public override string SkinTexture()
+    {
+        method.DisplayMethod(data.skinTexture);
+        Console.Write("Pick a skin texture: ");
+        return _skinTexture = method.InputRead(data.skinTexture, 0);
+    }
+
     public override string FavoriteFood()
     {
-        
         switch (this._breed)
         {
+            case "Triceratops":
+                return _favoriteFood = data.favoriteFood[1];
+            case "Tyrannosaurus":
+                return _favoriteFood = data.favoriteFood[0];
             case "Brachiosaurus":
                 return _favoriteFood = data.favoriteFood[1];
             case "Pterodactyl":
                 return _favoriteFood = data.favoriteFood[2];
-            case "Herrerasaurus":
-                return _favoriteFood = data.favoriteFood[0];
-            case "Stegosaurus":
-                return _favoriteFood = $"{data.favoriteFood[1]}, {data.favoriteFood[3]}";
+            case "Tylosaurus":
+                return _favoriteFood = data.favoriteFood[2];
+            case "Oviraptor":
+                return _favoriteFood = data.favoriteFood[4];
+            case "Troodon":
+                return _favoriteFood = data.favoriteFood[4];
+            case "Ankylosaurus":
+                return _favoriteFood = data.favoriteFood[2];
         }
         return "";
     }
@@ -975,6 +1122,52 @@ public class CretaceousDino : DinoBuilder,DinoBuild
     {
         get => _name; set => _name = value;
     }
+    public IEnumerable<int> TraitsAmount()
+    {
+        bool repeat1 = false;
+        int add = 0;
+        int total = 0;
+        data.traits.Add("Speed", 0);
+        data.traits.Add("Strength", 0);
+        data.traits.Add("Intelligence", 0);
+        data.traits.Add("Dexterity", 0);
+        data.traits.Add("Toughness", 0);
+        Console.WriteLine();
+        Console.WriteLine("Allocate 40 points to your dinosaur stats, Max per stat is 20");
+        sb.Clear();
+        Console.WriteLine(sb.Append('-', 32));
+        Console.WriteLine();    
+        foreach (KeyValuePair<string, int> elem in data.traits)
+        {
+            Console.WriteLine($"{elem.Key}: {elem.Value}");
+        }
+        foreach (KeyValuePair<string, int> elem in data.traits)
+        {
+            Console.Write($"{elem.Key}: ");
+            do
+            {
+                try
+                {
+                    add = int.Parse(Console.ReadLine());
+                    if (add < 0 | add > 20)
+                    {
+                        Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
+                        repeat1 = true;
+                    }
+                    else if (total > 41)
+                    {
+                        Console.Write($"You can only allocate 40 points, Your remaining points are {total - 40}. Try again.");
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                    repeat1 = true;
+                }
+                yield return data.traits[elem.Key] = data.traits[elem.Key] + add;
+            }while (repeat1) ;  
+        }
+    }
 
     public bool hasWing()
     {
@@ -983,18 +1176,27 @@ public class CretaceousDino : DinoBuilder,DinoBuild
         {
             switch (this._breed)
             {
+                case "Triceratops":
+                    return _wing = false;
+                case "Tyrannosaurus":
+                    return _wing = false;
                 case "Brachiosaurus":
-                    return false;
+                    return _wing = false;
                 case "Pterodactyl":
-                    return true;
-                case "Herrerasaurus":
-                    return false;
-                case "Stegosaurus":
-                    return false;
+                    return _wing = true;
+                case "Tylosaurus":
+                    return _wing = false;
+                case "Oviraptor":
+                    return _wing = false;
+                case "Troodon":
+                    return _wing = false;
+                case "Ankylosaurus":
+                    return _wing = false;
                 default:
                     repeat = true;
                     Console.WriteLine("Invalid input. Try again.");
                     break;
+            
             }
         }while (repeat);
 
@@ -1008,14 +1210,22 @@ public class CretaceousDino : DinoBuilder,DinoBuild
        {
            switch (this._breed)
            {
+               case "Triceratops":
+                   return _fins = false;
+               case "Tyrannosaurus":
+                   return _fins = false;
                case "Brachiosaurus":
-                   return false;
+                   return _fins = false;
                case "Pterodactyl":
-                   return false;
-               case "Herrerasaurus":
-                   return false;
-               case "Stegosaurus":
-                   return false;
+                   return _fins = false;
+               case "Tylosaurus":
+                   return _fins = true;
+               case "Oviraptor":
+                   return _fins = false;
+               case "Troodon":
+                   return _fins = false;
+               case "Ankylosaurus":
+                   return _fins = false;
                default:
                    repeat = true;
                    Console.WriteLine("Invalid input. Try again.");
@@ -1032,14 +1242,22 @@ public class CretaceousDino : DinoBuilder,DinoBuild
         {
             switch (this._breed)
             {
+                case "Triceratops":
+                    return _claw = false;
+                case "Tyrannosaurus":
+                    return _claw = true;
                 case "Brachiosaurus":
-                    return true;
+                    return _claw = true;
                 case "Pterodactyl":
-                    return true;
-                case "Herrerasaurus":
-                    return true;
-                case "Stegosaurus":
-                    return false;
+                    return _claw = true;
+                case "Tylosaurus":
+                    return _claw = false;
+                case "Oviraptor":
+                    return _claw = true;
+                case "Troodon":
+                    return _claw = true;
+                case "Ankylosaurus":
+                    return _claw = false;
                 default:
                     repeat = true;
                     Console.WriteLine("Invalid input. Try again.");
