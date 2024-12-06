@@ -62,6 +62,10 @@ namespace DinoPetCharCreation
                     if (build_choice.ToLower() == "y")
                     {
                         triassicdino.BuildDinosaur();
+                        foreach (KeyValuePair<string, int> elem in data.traits)
+                        {
+                            Console.WriteLine($"{elem.Key}: {elem.Value}");
+                        }
                     }
                     else if (build_choice.ToLower() == "n")
                     {

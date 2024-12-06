@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace DinoPetCharCreation;
@@ -23,7 +24,7 @@ public abstract class DinoBuilder
 }
 public interface DinoBuild
 {
-    IEnumerable<int> TraitsAmount();
+    int TraitsAmount();
     bool hasWing();
     bool hasFins();
     bool hasClaw();
@@ -51,6 +52,7 @@ public class TriassicDino : DinoBuilder,DinoBuild
     private bool _fins;
     private bool _claw;
     private StringBuilder sb = new StringBuilder();
+    private int data.traits[Key.Value];
     public TriassicDino()
     {
         
@@ -306,7 +308,7 @@ public class TriassicDino : DinoBuilder,DinoBuild
         get => _name; set => _name = value;
     }
 
-    public IEnumerable<int> TraitsAmount()
+    public int TraitsAmount()
     {
         bool repeat1 = false;
         int add = 0;
@@ -328,30 +330,36 @@ public class TriassicDino : DinoBuilder,DinoBuild
         }
         foreach (KeyValuePair<string, int> elem in data.traits)
         {
-            Console.Write($"{elem.Key}: ");
-            do
-            {
                 try
                 {
-                    add = int.Parse(Console.ReadLine());
-                    if (add < 0 | add > 20)
+                    do
                     {
-                                Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
-                                repeat1 = true;
-                    }
-                    else if (total > 41)
-                    {
-                        Console.Write($"You can only allocate 40 points, Your remaining points are {total - 40}. Try again.");
-                    }
+                        repeat1 = false;
+                        Console.Write($"{elem.Key}: ");
+                        add = int.Parse(Console.ReadLine());
+                        total += add;
+                        if (add < 0 | add > 20)
+                        {
+                            total -= add;
+                            Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
+                            repeat1 = true;
+                        }
+                        else if (total >= 41)
+                        {
+                            total -= add;   
+                            Console.WriteLine($"You can only allocate 40 points, Your remaining points are {40 - total}. Try again.");
+                            repeat1 = true;
+                        }
+                    } while (repeat1);
                 }
                 catch (FormatException)
                 {
-                            Console.WriteLine("Invalid input. Try again.");
-                            repeat1 = true;
+                    Console.WriteLine("Invalid input. Try again.");
+                    repeat1 = true;
                 }
-                yield return data.traits[elem.Key] = data.traits[elem.Key] + add;
-            }while (repeat1) ;  
+                data.traits[elem.Key] = data.traits[elem.Key] + add;
         }
+        return 0;
     }
 
     public bool hasWing()
@@ -701,7 +709,7 @@ public class JurassicDino : DinoBuilder,DinoBuild
     {
         get => _name; set => _name = value;
     }
-    public IEnumerable<int> TraitsAmount()
+    public int TraitsAmount()
     {
         bool repeat1 = false;
         int add = 0;
@@ -744,9 +752,12 @@ public class JurassicDino : DinoBuilder,DinoBuild
                     Console.WriteLine("Invalid input. Try again.");
                     repeat1 = true;
                 }
-                yield return data.traits[elem.Key] = data.traits[elem.Key] + add;
+                data.traits[elem.Key] = data.traits[elem.Key] + add;
+                return data.traits[elem.Key];
             }while (repeat1) ;  
         }
+
+        return 0;
     }
 
     public bool hasWing()
@@ -1122,7 +1133,7 @@ public class CretaceousDino : DinoBuilder,DinoBuild
     {
         get => _name; set => _name = value;
     }
-    public IEnumerable<int> TraitsAmount()
+    public int TraitsAmount()
     {
         bool repeat1 = false;
         int add = 0;
@@ -1164,9 +1175,11 @@ public class CretaceousDino : DinoBuilder,DinoBuild
                     Console.WriteLine("Invalid input. Try again.");
                     repeat1 = true;
                 }
-                yield return data.traits[elem.Key] = data.traits[elem.Key] + add;
+                return data.traits[elem.Key];
             }while (repeat1) ;  
         }
+
+        return 0;
     }
 
     public bool hasWing()
