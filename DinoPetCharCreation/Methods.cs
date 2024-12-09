@@ -1,62 +1,111 @@
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DinoPetCharCreation;
 
 public class Methods
 {
     static StringBuilder sb = new StringBuilder();
-    public void DisplayMethod(string[] arr)
+    public string DisplayNReadMethod(Dictionary<int, string> dict, string edit)
         {
             Console.Clear();
-            Console.WriteLine("Choose the corresponding number");
+            Console.WriteLine(edit);
             sb.Clear();
             Console.WriteLine(sb.Append('-', 32));
-            for (int i = 0; i < arr.Length; i++)
+            foreach (KeyValuePair<int, string> kvp in dict)
             {
-                Console.WriteLine($"{i + 1}-{arr[i]}");
+                Console.WriteLine($"[{kvp.Key}]: {kvp.Value}");
             }
-        }
-    public void DisplayMethodEra(string[] arr)
-    {
-        Console.WriteLine();
-        Console.WriteLine("Choose the corresponding number");
-        sb.Clear();
-        Console.WriteLine(sb.Append('-', 32));
-        for (int i = 0; i < arr.Length; i++)
-        {
-            Console.WriteLine($"{i + 1}-{arr[i]}");
-        }
-    }
-
-        public string InputRead(string[] arr, int modify)
-        {
             bool error = false;
             do
             {
                 try
                 {
-                    string result = arr[int.Parse(Console.ReadLine()) - 1 + modify];
-                    return result;
+                    Console.Write("Choose an option: ");
+                    dict.TryGetValue(int.Parse(Console.ReadLine() ?? throw new InvalidOperationException()), out var value);
+                    return value ?? throw new InvalidOperationException();
                 }
                 catch (IndexOutOfRangeException e)
 
                 {
                     Console.WriteLine("Invalid input. Try again.");
-                    Console.Write("Answer: ");
-                    error = true;  
+                    error = true;
                 }
                 catch (FormatException e)
                 {
                     Console.WriteLine("Invalid input. Try again.");
-                    Console.Write("Answer: ");
+                    error = true;
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine("Invalid input. Try again.");
                     error = true;
                 }
             }while (error);
 
-            return null;
+            return "";
         }
 
-        public void showGameStory()
+    public string DisplayNReadMethod( Dictionary<string, List<(string habitat, string dinosaurType)>> dict, string era, string habitat, string modify)
+    {
+        Dictionary<int, string> dinos = new Dictionary<int, string>();
+        int number = 1;
+        var eraCheck = dict[era];
+        foreach (var (environment, breed) in eraCheck)
+        {
+            if (environment == habitat)
+            {
+                dinos.Add(number, breed);
+                number++;
+            }
+        }
+        return DisplayNReadMethod(dinos, modify);
+    }
+
+    public string NameCheck(string modify)
+    {
+        Console.Clear();
+        bool repeat = false;
+        Regex rg = new Regex(@"^[a-zA-Z0-9]{6,20}$");
+        do
+        {
+            try
+            {
+                Console.Write($"{modify}: ");
+                string name = Console.ReadLine() ?? throw new InvalidOperationException();
+                if (rg.IsMatch(name))
+                {
+                    return name;
+                }
+                else
+                {
+                    Console.WriteLine("Minimum of 6 characters and maximum of 20 characters. Letters and Numbers only");
+                    repeat = true;
+                }
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine("Invalid input. Try again.");
+                repeat = true;
+            }
+        }while (repeat);
+
+        return "";
+    }
+
+    public string FavoriteFoodGet(Dictionary<string, string> dict, string breed)
+    {
+        foreach (KeyValuePair<string, string> kvp in dict)
+        {
+            if (kvp.Key == breed)
+            {
+                return kvp.Value;
+            }
+        }
+        return "";
+    }
+
+    public void showgamestory()
         {
             Console.Clear();
             TypeWriter("In a world where mysteries lie in every corner of the land, civilization drastically " +
@@ -90,7 +139,7 @@ public class Methods
             Console.WriteLine();
         }
 
-        public void showCredits()
+        public void showcredits()
         {
             
             Console.WriteLine($"           Credits" +

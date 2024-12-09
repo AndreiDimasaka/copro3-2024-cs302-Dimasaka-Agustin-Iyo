@@ -7,18 +7,18 @@ public abstract class DinoBuilder
 {
     public abstract string Era { get; set; }
 
-    public abstract string Habitat();
-    public abstract string Breed();
-    public abstract string Gender();
-    public abstract string Nature();
-    public abstract string SkinColor(string color);
-    public abstract string SkinPattern();
-    public abstract string SkinTexture();
-    public abstract string FavoriteFood();
-    public abstract string BodyFeatures();
-    public abstract string FacialFeatures();
-    public abstract string TailType();
-    public abstract string Behavior();
+    public abstract string Habitat{get;set;}
+    public abstract string Breed{get;set;}
+    public abstract string Gender{get;set;}
+    public abstract string Nature{get;set;}
+    public abstract string SkinColor{get;set;}
+    public abstract string SkinPattern{get;set;}
+    public abstract string SkinTexture{get;set;}
+    public abstract string FavoriteFood{get;set;}
+    public abstract string BodyFeatures{get;set;}
+    public abstract string FacialFeatures{get;set;}
+    public abstract string TailType{get;set;}
+    public abstract string Behavior{get;set;}
     public abstract string Name { get; set; }
 
 }
