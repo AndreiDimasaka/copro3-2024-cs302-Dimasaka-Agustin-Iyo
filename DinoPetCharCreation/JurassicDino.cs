@@ -31,6 +31,7 @@ public class JurassicDino : DinoBuilder,DinoBuild
     }
     public void BuildDinosaur()
     {
+        Console.Clear();
         Console.WriteLine("Build Succeeded");
         Console.WriteLine($"Your dinosaur is a {_breed}");
         Console.WriteLine($"Period where your dinosaur lived in {_era}");
@@ -74,6 +75,7 @@ public class JurassicDino : DinoBuilder,DinoBuild
 
     public override string Breed()
     { 
+        Console.Clear();
         bool repeat = false;
         string choice;
         do
@@ -271,6 +273,7 @@ public class JurassicDino : DinoBuilder,DinoBuild
     }
     public void TraitsAmount()
     {
+        Console.Clear();
         bool repeat1 = false;
         int add = 0;
         int total = 0;
@@ -287,14 +290,11 @@ public class JurassicDino : DinoBuilder,DinoBuild
         Console.WriteLine();    
         foreach (KeyValuePair<string, int> elem in data.traits)
         {
-            Console.WriteLine($"{elem.Key}: {elem.Value}");
-        }
-        foreach (KeyValuePair<string, int> elem in data.traits)
-        {
-            try
+            do
             {
-                do
+                try
                 {
+                    repeat1 = false;
                     Console.Write($"{elem.Key}: ");
                     add = int.Parse(Console.ReadLine());
                     total += add;
@@ -304,20 +304,21 @@ public class JurassicDino : DinoBuilder,DinoBuild
                         Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
                         repeat1 = true;
                     }
-                    else if (total > 41)
+                    else if (total > 40)
                     {
                         total -= add;
                         Console.WriteLine(
-                            $"You can only allocate 40 points, Your remaining points are {total - 40}. Try again.");
+                            $"You can only allocate 40 points, Your remaining points are {40 - total}. Try again.");
                         repeat1 = true;
                     }
-                } while (repeat1);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Invalid input. Try again.");
-                repeat1 = true;
-            }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                    repeat1 = true;
+                }
+            } while (repeat1);
+
             data.traits[elem.Key] = data.traits[elem.Key] + add;
         }
     }

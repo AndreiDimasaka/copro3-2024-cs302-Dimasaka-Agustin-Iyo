@@ -14,12 +14,12 @@ namespace DinoPetCharCreation
             Methods func = new Methods();
             Start:
             Console.WriteLine("Welcome to DinoPetCharCreation");
-            Console.WriteLine("Do you wish to skip the story? Type 'n'");
-            if (Console.ReadLine().ToLower() != "n")
+            Console.Write("Do you wish to skip the story? Type 'y': ");
+            if (Console.ReadLine().ToLower() != "y")
             {
                 func.showGameStory();
             }
-            func.DisplayMethod(data.era);
+            func.DisplayMethodEra(data.era);
             Console.Write("Choose an era: ");
             string era = func.InputRead(data.era, 0);   
             TriassicDino triassicdino = new TriassicDino();
@@ -64,6 +64,7 @@ namespace DinoPetCharCreation
                     triassicdino.TailType();
                     triassicdino.Behavior();
                     triassicdino.TraitsAmount();
+                    Console.Clear();
                     Console.Write("Enter a name for your dinosaur: ");
                     triassicdino.Name = Console.ReadLine();
                     Build:
@@ -74,10 +75,11 @@ namespace DinoPetCharCreation
                         triassicdino.BuildDinosaur();
                         foreach (KeyValuePair<string, int> elem in data.traits)
                         {
-                            Console.WriteLine($"{elem.Key}: {elem.Value}");
+                            Console.WriteLine($"{elem.Key}:n" +
+                                              $"n {elem.Value}");
                         }
                         End1:
-                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        Console.Write("Do you want to end the program? (y/n): ");
                         string end = Console.ReadLine();
                         if (end.ToLower() == "n")
                         {
@@ -97,7 +99,7 @@ namespace DinoPetCharCreation
                     else if (build_choice.ToLower() == "n")
                     {
                         End2:
-                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        Console.Write("Do you want to end the program? (y/n): ");
                         string end = Console.ReadLine();
                         if (end.ToLower() == "n")
                         {
@@ -157,6 +159,7 @@ namespace DinoPetCharCreation
                     jurassicdino.TailType();
                     jurassicdino.Behavior();
                     jurassicdino.TraitsAmount();
+                    Console.Clear();
                     Console.Write("Enter a name for your dinosaur: ");
                     jurassicdino.Name = Console.ReadLine();
                     jBuild:
@@ -170,7 +173,7 @@ namespace DinoPetCharCreation
                             Console.WriteLine($"{elem.Key}: {elem.Value}");
                         }
                         End1:
-                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        Console.Write("Do you want to end the program? (y/n): ");
                         string end = Console.ReadLine();
                         if (end.ToLower() == "n")
                         {
@@ -190,7 +193,7 @@ namespace DinoPetCharCreation
                     else if (build_choice.ToLower() == "n")
                     {
                         End2:
-                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        Console.Write("Do you want to end the program? (y/n): ");
                         string end = Console.ReadLine();
                         if (end.ToLower() == "n")
                         {
@@ -249,6 +252,7 @@ namespace DinoPetCharCreation
                     cretaceousdino.TailType();
                     cretaceousdino.Behavior();
                     cretaceousdino.TraitsAmount();
+                    Console.Clear();
                     Console.Write("Enter a name for your dinosaur: ");
                     cretaceousdino.Name = Console.ReadLine();
                     cBuild:
@@ -262,7 +266,7 @@ namespace DinoPetCharCreation
                             Console.WriteLine($"{elem.Key}: {elem.Value}");
                         }
                         End1:
-                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        Console.Write("Do you want to end the program? (y/n): ");
                         string end = Console.ReadLine();
                         if (end.ToLower() == "n")
                         {
@@ -282,7 +286,7 @@ namespace DinoPetCharCreation
                     else if (build_choice.ToLower() == "n")
                     {
                         End2:
-                        Console.WriteLine("Do you want to end the program? (y/n): ");
+                        Console.Write("Do you want to end the program? (y/n): n");
                         string end = Console.ReadLine();
                         if (end.ToLower() == "n")
                         {

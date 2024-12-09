@@ -32,6 +32,7 @@ public class CretaceousDino : DinoBuilder, DinoBuild
 
     public void BuildDinosaur()
     {
+        Console.Clear();
         Console.WriteLine("Build Succeeded");
         Console.WriteLine($"Your dinosaur is a {_breed}");
         Console.WriteLine($"Period where your dinosaur lived in {_era}");
@@ -80,6 +81,7 @@ public class CretaceousDino : DinoBuilder, DinoBuild
 
     public override string Breed()
     {
+        Console.Clear();
         bool repeat = false;
         bool repeat1 = false;
         string choice;
@@ -146,6 +148,7 @@ public class CretaceousDino : DinoBuilder, DinoBuild
                     Console.WriteLine($"2-{data.cretaceousBreeds[5]}");
                     do
                     {
+                        Console.Write("Pick a dinosaur: ");
                         choice = (Console.ReadLine());
                         switch (choice)
                         {
@@ -168,6 +171,7 @@ public class CretaceousDino : DinoBuilder, DinoBuild
                     Console.WriteLine($"3-{data.cretaceousBreeds[3]}");
                     do
                     {
+                        Console.Write("Pick a dinosaur: ");
                         choice = (Console.ReadLine());
                         switch (choice)
                         {
@@ -192,6 +196,7 @@ public class CretaceousDino : DinoBuilder, DinoBuild
                     Console.WriteLine($"3-{data.cretaceousBreeds[7]}");
                     do
                     {
+                        Console.Write("Pick a dinosaur: ");
                         choice = (Console.ReadLine());
                         switch (choice)
                         {
@@ -318,6 +323,7 @@ public class CretaceousDino : DinoBuilder, DinoBuild
 
     public void TraitsAmount()
     {
+        Console.Clear();
         bool repeat1 = false;
         int add = 0;
         int total = 0;
@@ -332,17 +338,14 @@ public class CretaceousDino : DinoBuilder, DinoBuild
         sb.Clear();
         Console.WriteLine(sb.Append('-', 32));
         Console.WriteLine();
-        foreach (KeyValuePair<string, int> elem in data.traits)
-        {
-            Console.WriteLine($"{elem.Key}: {elem.Value}");
-        }
 
         foreach (KeyValuePair<string, int> elem in data.traits)
         {
-            try
+            do
             {
-                do
+                try
                 {
+                    repeat1 = false;
                     Console.Write($"{elem.Key}: ");
                     add = int.Parse(Console.ReadLine());
                     total += add;
@@ -352,20 +355,19 @@ public class CretaceousDino : DinoBuilder, DinoBuild
                         Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
                         repeat1 = true;
                     }
-                    else if (total > 41)
+                    else if (total > 40)
                     {
                         total -= add;
-                        Console.WriteLine(
-                            $"You can only allocate 40 points, Your remaining points are {total - 40}. Try again.");
+                        Console.WriteLine($"You can only allocate 40 points, Your remaining points are {40 - total}. Try again.");
                         repeat1 = true;
                     }
-                } while (repeat1);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Invalid input. Try again.");
-                repeat1 = true;
-            }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                    repeat1 = true;
+                }
+            }while (repeat1);
 
             data.traits[elem.Key] = data.traits[elem.Key] + add;
         }

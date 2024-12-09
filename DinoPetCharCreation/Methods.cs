@@ -7,7 +7,7 @@ public class Methods
     static StringBuilder sb = new StringBuilder();
     public void DisplayMethod(string[] arr)
         {
-            Console.WriteLine();
+            Console.Clear();
             Console.WriteLine("Choose the corresponding number");
             sb.Clear();
             Console.WriteLine(sb.Append('-', 32));
@@ -16,6 +16,17 @@ public class Methods
                 Console.WriteLine($"{i + 1}-{arr[i]}");
             }
         }
+    public void DisplayMethodEra(string[] arr)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Choose the corresponding number");
+        sb.Clear();
+        Console.WriteLine(sb.Append('-', 32));
+        for (int i = 0; i < arr.Length; i++)
+        {
+            Console.WriteLine($"{i + 1}-{arr[i]}");
+        }
+    }
 
         public string InputRead(string[] arr, int modify)
         {
@@ -32,7 +43,7 @@ public class Methods
                 {
                     Console.WriteLine("Invalid input. Try again.");
                     Console.Write("Answer: ");
-                    error = true;
+                    error = true;  
                 }
                 catch (FormatException e)
                 {
@@ -48,7 +59,7 @@ public class Methods
         public void showGameStory()
         {
             Console.Clear();
-            Console.WriteLine("In a world where mysteries lie in every corner of the land, civilization drastically " +
+            TypeWriter("In a world where mysteries lie in every corner of the land, civilization drastically " +
             "changed when ancient ruins, forgotten in time, towered before humanity. Strange structures " +
             "began to rise as tremors shook the earth, unearthing secrets buried deep underground. " +
             "These are later named \"Monoliths,\" structures left behind by an ancient civilization " +
@@ -69,10 +80,22 @@ public class Methods
             "These explorers challenge the unknown in the hopes of finding fame, fortune, or maybe even the truth.");
         }
 
+        public void TypeWriter(string text, int delay = 30)
+        {
+            foreach (char c in text)
+            {
+                Console.Write(c);
+                Thread.Sleep(delay);
+            }
+            Console.WriteLine();
+        }
+
         public void showCredits()
         {
-            Console.WriteLine($"Documentation   Don Isaac Agustin" +
-                              $"\nCoderist      Andrei Dimasaka" +
-                              $"\nMoral Support Angelo Iyo");
+            
+            Console.WriteLine($"           Credits" +
+                              $"\nDocumentation   Don Isaac Agustin" +
+                              $"\nCoderist        Andrei Dimasaka" +
+                              $"\nMoral Support   Angelo Iyo");
         }
     }
