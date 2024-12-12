@@ -151,8 +151,8 @@ public class Methods
         {
             
             Console.WriteLine($"           Credits" +
-                              $"\nDocumentation   Don Isaac Agustin" +
-                              $"\nCoderist        Andrei Dimasaka" +
-                              $"\nMoral Support   Angelo Iyo");
+                              $"\nBATTLE HARDENED   Don Isaac Agustin" +
+                              $"\nCHILL GUY         Andrei Dimasaka" +
+                              $"\nRESIDENT SLEEPER  Angelo Iyo");
         }
     }
