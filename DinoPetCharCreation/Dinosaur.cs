@@ -162,6 +162,14 @@ public class Dinosaur : DinoBuilder,DinoBuild
 
     public void TraitsAmount()
     {
+    Dictionary<string, int> traits = new Dictionary<string, int>()
+    {
+        { "Speed", 0 },
+        { "Strength", 0 },
+        { "Intelligence", 0 },
+        { "Dexterity", 0 },
+        { "Toughness", 0 }
+    };
         Console.Clear();
         bool repeat1 = false;
         int add = 0;
@@ -172,7 +180,7 @@ public class Dinosaur : DinoBuilder,DinoBuild
         sb.Clear();
         Console.WriteLine(sb.Append('-', 64));
         Console.WriteLine("Stats: (Speed, Strength, Intelligence, Dexterity, Toughness)");    
-        foreach (KeyValuePair<string, int> elem in data.traits)
+        foreach (KeyValuePair<string, int> elem in traits)
         {
             do
             {
@@ -182,7 +190,6 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     Console.WriteLine($"Remaining points {40 - total}");
                     Console.Write($"{elem.Key}: ");
                     add = int.Parse(Console.ReadLine());
-                    data.traits[elem.Key] = data.traits[elem.Key] + add;
                     if (add < 0 | add > 20)
                     {
                         Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
@@ -195,7 +202,7 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     else
                     { 
                         total += add;
-                        data.traits[elem.Key] = data.traits[elem.Key] + add;
+                        traits[elem.Key] = traits[elem.Key] + add;
                         if (total > 40)
                         {
                             total -= add;
@@ -217,7 +224,7 @@ public class Dinosaur : DinoBuilder,DinoBuild
                 }
             } while (repeat1);
         }
-        foreach (KeyValuePair<string, int> elem2 in data.traits)
+        foreach (KeyValuePair<string, int> elem2 in traits)
         {
             switch (elem2.Key)
             {

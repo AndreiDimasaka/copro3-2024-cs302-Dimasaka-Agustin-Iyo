@@ -96,7 +96,7 @@ public class Methods
     public void CodeEnd()
     {
         Console.WriteLine();
-        Console.WriteLine("Press any key to continue");
+        Console.Write("Press any key to continue");
         Console.ReadKey();
         Console.Clear();
     }

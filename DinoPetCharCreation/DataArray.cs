@@ -157,14 +157,6 @@ public struct DataArray
         {"LORRAINOSAURUS", "FISH"},
         {"STEGOSAURUS", "PLANTS"}
     };
-    internal Dictionary<string, int> traits = new Dictionary<string, int>()
-    {
-        { "Speed", 0 },
-        { "Strength", 0 },
-        { "Intelligence", 0 },
-        { "Dexterity", 0 },
-        { "Toughness", 0 }
-    };
     public DataArray()
     {
     }

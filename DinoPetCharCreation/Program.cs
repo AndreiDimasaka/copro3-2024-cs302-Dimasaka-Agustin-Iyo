@@ -114,6 +114,7 @@ namespace DinoPetCharCreation
                                     command.ExecuteNonQuery();
                                     reader = command.ExecuteReader();
                                     reader.Read();
+                                    Console.Clear();
                                     for (int i = 0; i < reader.FieldCount; i++)
                                     {
                                         Console.WriteLine($"{reader.GetName(i)}: {reader.GetValue(i)}");
