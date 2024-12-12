@@ -178,27 +178,29 @@ public class Dinosaur : DinoBuilder,DinoBuild
             {
                 try
                 {
+                    repeat1 = false;
                     Console.WriteLine($"Remaining points {40 - total}");
                     Console.Write($"{elem.Key}: ");
                     add = int.Parse(Console.ReadLine());
-                    total += add;
                     data.traits[elem.Key] = data.traits[elem.Key] + add;
                     if (add < 0 | add > 20)
                     {
-                        data.traits[elem.Key] = data.traits[elem.Key] - add;
-                        total -= add;
                         Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
-                        repeat1 = true;
-                    }
-                    else if (total > 40)
-                    {
-                        data.traits[elem.Key] = data.traits[elem.Key] - add;
-                        total -= add;
                         repeat1 = true;
                     }
                     else if (total == 40)
                     {
                         repeat1 = false;
+                    }
+                    else
+                    { 
+                        total += add;
+                        data.traits[elem.Key] = data.traits[elem.Key] + add;
+                        if (total > 40)
+                        {
+                            total -= add;
+                            repeat1 = true;
+                        }
                     }
                 }
                 catch (FormatException)

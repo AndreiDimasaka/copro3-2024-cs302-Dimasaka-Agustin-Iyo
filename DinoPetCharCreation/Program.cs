@@ -37,6 +37,7 @@ namespace DinoPetCharCreation
                     dino.Name = func.NameCheck("Name your dinosaur");
                     dino.TraitsAmount();
                     Build:
+                    Console.Clear();
                     Console.Write("Do you wish to build this dinosaur?(yes/no): ");
                     string choice = Console.ReadLine().ToLower();
                     if (choice == "yes")
