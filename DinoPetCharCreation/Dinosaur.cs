@@ -5,7 +5,6 @@ namespace DinoPetCharCreation;
 public class Dinosaur : DinoBuilder,DinoBuild
 {
     private DataArray data = new DataArray();
-    private Methods method = new Methods();
     private string _era;
     private string _habitat;
     private string _breed;
@@ -20,9 +19,12 @@ public class Dinosaur : DinoBuilder,DinoBuild
     private string _tailType;
     private string _behavior;
     private string _name;
-    private string _wing;
-    private string _fins;
-    private string _claw;
+    private string _extraFeatures;
+    private int _speed;
+    private int _strength;
+    private int _intelligence;
+    private int _dexterity;
+    private int _toughness;
     private StringBuilder sb = new StringBuilder();
 
     public Dinosaur()
@@ -39,8 +41,9 @@ public class Dinosaur : DinoBuilder,DinoBuild
             $"\nEra: {_era}\nHabitat: {_habitat}\nBreed: {_breed}\nGender: {_gender}\nNature: {_nature}" +
             $"\nSkin Color: {_skinColor}\nSkin Pattern: {_skinPattern}\nSkin Texture: {_skinTexture}" +
             $"\nFavorite Food: {_favoriteFood}\nBody Features: {_bodyFeatures}\nFacial Features: {_facialFeatures}" +
-            $"\nExtra Features: {_wing} {_claw} {_fins} \nTail Type: {_tailType} \nBehavior: {_behavior} \nName: {_name}");
-        PrintTraits();
+            $"\nExtra Features:{_extraFeatures} \nTail Type: {_tailType} \nBehavior: {_behavior} \nName: {_name}");
+        
+        Console.WriteLine($"Stats(Spd: {_speed}, Str: {_strength}, Int: {_intelligence}, Dex: {_dexterity}, Tough: {_toughness})");
     }
     
 
@@ -101,6 +104,11 @@ public class Dinosaur : DinoBuilder,DinoBuild
         get => _bodyFeatures;
         set => _bodyFeatures = value;
     }
+    public string ExtraFeatures
+    {
+        get => _extraFeatures;
+        set => _extraFeatures = value;
+    }
 
     public override string FacialFeatures
     {
@@ -126,6 +134,32 @@ public class Dinosaur : DinoBuilder,DinoBuild
         set => _name = value;
     }
 
+    public int Speed
+    {
+        get => _speed;
+        set => _speed = value;
+    }
+    public int Strength
+    {
+        get => _strength;
+        set => _strength = value;
+    }
+    public int Intelligence
+    {
+        get => _intelligence;
+        set => _intelligence = value;
+    }
+    public int Dexterity
+    {
+        get => _dexterity;
+        set => _dexterity = value;
+    }
+    public int Toughness
+    {
+        get => _toughness;
+        set => _toughness = value;
+    }
+
     public void TraitsAmount()
     {
         Console.Clear();
@@ -144,20 +178,27 @@ public class Dinosaur : DinoBuilder,DinoBuild
             {
                 try
                 {
-                    repeat1 = false;
                     Console.WriteLine($"Remaining points {40 - total}");
                     Console.Write($"{elem.Key}: ");
-                    add = int.Parse(Console.ReadLine());total += add;
+                    add = int.Parse(Console.ReadLine());
+                    total += add;
+                    data.traits[elem.Key] = data.traits[elem.Key] + add;
                     if (add < 0 | add > 20)
                     {
+                        data.traits[elem.Key] = data.traits[elem.Key] - add;
                         total -= add;
                         Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
                         repeat1 = true;
                     }
                     else if (total > 40)
                     {
+                        data.traits[elem.Key] = data.traits[elem.Key] - add;
                         total -= add;
                         repeat1 = true;
+                    }
+                    else if (total == 40)
+                    {
+                        repeat1 = false;
                     }
                 }
                 catch (FormatException)
@@ -172,22 +213,32 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     Console.WriteLine("Invalid input. Try again.");
                     repeat1 = true;
                 }
-            } while (repeat1) ;
-
-            data.traits[elem.Key] = data.traits[elem.Key] + add;
+            } while (repeat1);
         }
-    }
-    public void PrintTraits()
-    {
-        foreach (KeyValuePair<string, int> elem in data.traits)
+        foreach (KeyValuePair<string, int> elem2 in data.traits)
         {
-            Console.WriteLine($"{elem.Key}: {elem.Value}");
+            switch (elem2.Key)
+            {
+                case "Speed":
+                    _speed = elem2.Value;
+                    break;
+                case "Strength":
+                    _strength = elem2.Value;
+                    break;
+                case "Intelligence":
+                    _intelligence = elem2.Value;
+                    break;
+                case "Dexterity":
+                    _dexterity = elem2.Value;
+                    break;
+                case "Toughness":
+                    _toughness = elem2.Value;
+                    break;
+            }
         }
     }
-
     public bool hasWing()
     {
-
             switch (this._breed)
             {
                 case "PTEROSAURUS":
@@ -195,11 +246,8 @@ public class Dinosaur : DinoBuilder,DinoBuild
                 case "PTERODACTYL":
                     return true;
                 default:
-                    Console.WriteLine("Invalid input. Try again.");
-                    break;
+                    return false;
             }
-        
-        return false;
     }
 
     public bool hasFins()
@@ -220,7 +268,6 @@ public class Dinosaur : DinoBuilder,DinoBuild
 
     public bool hasClaw()
     {
-        bool repeat = false;
             switch (this._breed)
             {
                 case "TRICERATOPS":
@@ -228,8 +275,6 @@ public class Dinosaur : DinoBuilder,DinoBuild
                 case "TYRANNOSAURUS":
                     return true;
                 case "BRACHIOSAURUS":
-                    return true;
-                case "PTERODACTYL":
                     return true;
                 case "OVIRAPTOR":
                     return true;
@@ -243,8 +288,6 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     return true;
                 case "PLATEOSAURUS":
                     return true;
-                case "PTEROSAURUS":
-                    return true;
                 default:
                     return false;
             }
@@ -254,17 +297,17 @@ public class Dinosaur : DinoBuilder,DinoBuild
     {
         if (hasFins())
         {
-            _fins = "FINS";
+            _extraFeatures = "FINS";
         }
 
         if (hasWing())
         {
-            _wing = "WINGS";
+            _extraFeatures = "WINGS";
         }
 
         if (hasClaw())
         {
-            _claw = "CLAWS";
+            _extraFeatures = "CLAWS";
         }
     }
 }

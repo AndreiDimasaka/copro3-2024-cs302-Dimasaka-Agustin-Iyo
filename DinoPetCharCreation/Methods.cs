@@ -93,6 +93,14 @@ public class Methods
         return "";
     }
 
+    public void CodeEnd()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Press any key to continue");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
     public string FavoriteFoodGet(Dictionary<string, string> dict, string breed)
     {
         foreach (KeyValuePair<string, string> kvp in dict)

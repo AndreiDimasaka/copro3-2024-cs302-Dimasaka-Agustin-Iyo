@@ -25,7 +25,6 @@ public abstract class DinoBuilder
 public interface DinoBuild
 {
     void TraitsAmount();
-    void PrintTraits();
     bool hasWing();
     bool hasFins();
     bool hasClaw();
