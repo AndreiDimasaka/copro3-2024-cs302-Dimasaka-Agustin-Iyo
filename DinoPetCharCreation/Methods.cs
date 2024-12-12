@@ -149,7 +149,7 @@ public class Methods
 
         public void showcredits()
         {
-            
+            Console.Clear();
             Console.WriteLine($"           Credits" +
                               $"\nBATTLE HARDENED   Don Isaac Agustin" +
                               $"\nCHILL GUY         Andrei Dimasaka" +
