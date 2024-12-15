@@ -5,9 +5,14 @@ namespace DinoPetCharCreation;
 
 public class Methods
 {
+    
     static StringBuilder sb = new StringBuilder();
     public string DisplayNReadMethod(Dictionary<int, string> dict, string edit)
-        {
+    {
+        bool error = false;
+            do{ 
+                error = false;
+
             Console.Clear();
             Console.WriteLine(edit);
             sb.Clear();
@@ -16,31 +21,34 @@ public class Methods
             {
                 Console.WriteLine($"[{kvp.Key}]: {kvp.Value}");
             }
-            bool error = false;
-            do
+            try
             {
-                try
-                {
                     Console.Write("Choose an option: ");
                     dict.TryGetValue(int.Parse(Console.ReadLine() ?? throw new InvalidOperationException()), out var value);
                     return value ?? throw new InvalidOperationException();
-                }
-                catch (IndexOutOfRangeException e)
+            }
+            catch (IndexOutOfRangeException e)
 
-                {
+            {
+                    Console.Clear();
                     Console.WriteLine("Invalid input. Try again.");
+                    CodeEnd();
                     error = true;
-                }
-                catch (FormatException e)
-                {
+            }
+            catch (FormatException e)
+            {
+                    Console.Clear();
                     Console.WriteLine("Invalid input. Try again.");
+                    CodeEnd();
                     error = true;
-                }
-                catch (InvalidOperationException e)
-                {
+            }
+            catch (InvalidOperationException e)
+            {
+                    Console.Clear();
                     Console.WriteLine("Invalid input. Try again.");
+                    CodeEnd();
                     error = true;
-                }
+            }
             }while (error);
 
             return "";

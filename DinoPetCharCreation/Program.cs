@@ -44,20 +44,20 @@ namespace DinoPetCharCreation
                     {
                         dino.BuildDinosaur();
                         string connectionString =
-                            "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = none;";
+                            "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = none;";
                         using (var connection = new MySqlConnection(connectionString))
                         {
                             try
                             {
                                 connection.Open();
                                 string query =
-                                    "INSERT INTO Dinosaur(Name, era, habitat, breed, FavoriteFood, Gender, Nature, SkinColor, SkinPattern, SkinTexture, BodyFeatures, ExtraFeatures, FacialFeatures, TailType, Behavior, Speed, Strength, Intelligence, Dexterity, Toughness) VALUES ('" +
+                                    "INSERT INTO Dinosaur(Name, era, habitat, breed, FavoriteFood, Gender, Nature, SkinColor, SkinPattern, SkinTexture, BodyFeatures, ExtraFeatures, FacialFeatures, TailType, Behavior, Speed, Strength, Intelligence, Dexterity, Toughness, HasWing, HasFins, HasClaw) VALUES ('" +
                                     dino.Name + "', '" + dino.Era + "', '" + dino.Habitat + "', '" + dino.Breed +
                                     "', '" + dino.FavoriteFood + "', '" + dino.Gender + "', '" + dino.Nature + "', '" +
                                     dino.SkinColor + "', '" + dino.SkinPattern + "', '" + dino.SkinTexture + "', '" +
                                     dino.BodyFeatures + "','" + dino.ExtraFeatures + "' ,'" + dino.FacialFeatures +
-                                    "', '" + dino.TailType + "', '" + dino.Behavior + "','" + dino.Speed + "', '" +
-                                    dino.Strength + "','" + dino.Intelligence + "','" + dino.Dexterity + "','" + dino.Toughness + "' )";
+                                    "', '" + dino.TailType + "', '" + dino.Behavior + "', " + dino.Speed + ", " +
+                                    dino.Strength + "," + dino.Intelligence + "," + dino.Dexterity + ",'" + dino.Toughness + "', "+dino.Wing+", "+dino.Fins+", "+dino.Claw+")";
                                 MySqlCommand command = new MySqlCommand(query, connection);
                                 command.ExecuteNonQuery();
                                 connection.Close();
@@ -83,7 +83,7 @@ namespace DinoPetCharCreation
                     break;
                 case "LOAD GAME":
                     string connectorString =
-                        "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = REQUIRED;";
+                        "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = REQUIRED;";
                     using (var connection = new MySqlConnection(connectorString))
                     {
                         try
@@ -104,6 +104,12 @@ namespace DinoPetCharCreation
                             do
                             {
                                 repeat = false;
+                                if (dino_save.Count == 0)
+                                {
+                                    Console.WriteLine("No dinosaurs loaded");
+                                    func.CodeEnd();
+                                    goto Start;
+                                }
                                 string name = func.DisplayNReadMethod(dino_save, "Saved Dinosaur");
                                 Console.Write("Do you wish to select or delete this dinosaur?(select/delete): ");
                                 string select_delete = Console.ReadLine().ToLower();
@@ -137,7 +143,13 @@ namespace DinoPetCharCreation
                                 else
                                 {
                                     Console.WriteLine("Wrong input");
-                                    repeat = true;
+                                    Console.WriteLine("Do you wish to go back to the menu? (y/n)");
+                                    string back = Console.ReadLine();
+                                    if (back.ToLower() == "y")
+                                    {
+                                        func.CodeEnd();
+                                        goto Start;
+                                    }
                                 }
                             } while (repeat);
                         }

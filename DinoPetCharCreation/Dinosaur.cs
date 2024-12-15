@@ -26,6 +26,9 @@ public class Dinosaur : DinoBuilder,DinoBuild
     private int _dexterity;
     private int _toughness;
     private StringBuilder sb = new StringBuilder();
+    private bool _fins;
+    private bool _wing;
+    private bool _claw;
 
     public Dinosaur()
     {
@@ -34,6 +37,9 @@ public class Dinosaur : DinoBuilder,DinoBuild
     
     public void BuildDinosaur()
     {
+        this.Wing = hasWing();
+        this.Fins = hasFins();
+        this.Claw = hasClaw();
         ExtraFeature();
         Console.Clear();
         Console.WriteLine("Successfully Built your dinosaur");
@@ -41,7 +47,7 @@ public class Dinosaur : DinoBuilder,DinoBuild
             $"\nEra: {_era}\nHabitat: {_habitat}\nBreed: {_breed}\nGender: {_gender}\nNature: {_nature}" +
             $"\nSkin Color: {_skinColor}\nSkin Pattern: {_skinPattern}\nSkin Texture: {_skinTexture}" +
             $"\nFavorite Food: {_favoriteFood}\nBody Features: {_bodyFeatures}\nFacial Features: {_facialFeatures}" +
-            $"\nExtra Features:{_extraFeatures} \nTail Type: {_tailType} \nBehavior: {_behavior} \nName: {_name}");
+            $"\nExtra Features:{_extraFeatures} \nTail Type: {_tailType} \nBehavior: {_behavior}\nHasWing: {_wing} \nHasFins: {_fins}\nHasClaw: {_claw}\nName: {_name}");
         
         Console.WriteLine($"Stats(Spd: {_speed}, Str: {_strength}, Int: {_intelligence}, Dex: {_dexterity}, Tough: {_toughness})");
     }
@@ -160,6 +166,24 @@ public class Dinosaur : DinoBuilder,DinoBuild
         set => _toughness = value;
     }
 
+    public bool Wing
+    {
+        get => _wing;
+        set => _wing = value;
+    }
+
+    public bool Fins
+    {
+        get => _fins;
+        set => _fins = value;
+    }
+
+    public bool Claw
+    {
+        get => _claw;
+        set => _claw = value;
+    }
+
     public void TraitsAmount()
     {
     Dictionary<string, int> traits = new Dictionary<string, int>()
@@ -192,7 +216,7 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     add = int.Parse(Console.ReadLine());
                     if (add < 0 | add > 20)
                     {
-                        Console.WriteLine("You can only allocate below 20 and above 0. Try again.");
+                        Console.WriteLine("You can only allocate below 20 and above 0. Try again.\n");
                         repeat1 = true;
                     }
                     else if (total == 40)
@@ -205,6 +229,7 @@ public class Dinosaur : DinoBuilder,DinoBuild
                         traits[elem.Key] = traits[elem.Key] + add;
                         if (total > 40)
                         {
+                            Console.WriteLine("You exceeded 40 points. Try again.\n");
                             total -= add;
                             repeat1 = true;
                         }
@@ -265,9 +290,9 @@ public class Dinosaur : DinoBuilder,DinoBuild
            {
                
                case "TYLOSAURUS":
-                   return true;
+                   return  true;
                case "ICHTHYOSAURUS":
-                   return true;
+                   return  true;
                case "LORRAINOSAURUS":
                    return true;
                default:
