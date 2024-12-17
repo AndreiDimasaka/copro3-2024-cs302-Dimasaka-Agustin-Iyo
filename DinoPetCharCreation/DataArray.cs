@@ -2,6 +2,13 @@ namespace DinoPetCharCreation;
 
 public struct DataArray
 {
+    internal Dictionary<int, string> loadmenu = new Dictionary<int, string>()
+    {
+        { 1, "VIEW ALL CHARACTERS" },
+        { 2, "VIEW A SPECIFIC CHARACTER" },
+        { 3, "DELETE A SPECIFIC CHARACTER" },
+        { 4, "GO BACK TO MAIN MENU" }
+    };
     internal Dictionary<int, string> menu = new Dictionary<int, string>()
     {
         { 1, "NEW GAME" },

@@ -82,21 +82,17 @@ namespace DinoPetCharCreation
 
                     break;
                 case "LOAD GAME":
-                    Console.Clear();
-                    Console.WriteLine("Saved Dinosaurs");
-                    sb.Clear();
-                    Console.WriteLine(sb.Append('-', 200));
-                    func.ShowAllCharacters();
                     string connectorString =
                         "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = REQUIRED;";
                     using (var connection = new MySqlConnection(connectorString))
                     {
                         try
                         {
+                            Menu:
                             connection.Open();
                             Dictionary<int, string> dino_save = new Dictionary<int, string>()
                             {
-                                { 0, "Exit" }
+                                { 0, "EXIT" }
                             };
                             string query = "SELECT * FROM Dinosaur";
                             MySqlCommand command = new MySqlCommand(query, connection);
@@ -107,25 +103,34 @@ namespace DinoPetCharCreation
                                 dino_save.Add(dino_save.Count, reader.GetString(0));
                             }
                             reader.Close();
-                            bool repeat = false;
-                            do
+                            if (dino_save.Count == 0)
                             {
-                                repeat = false;
-                                if (dino_save.Count == 0)
-                                {
-                                    Console.WriteLine("No dinosaurs loaded");
+                                Console.WriteLine("No dinosaurs loaded");
+                                func.CodeEnd();
+                                goto Start;
+                            }
+                            switch (func.DisplayNReadMethod(data.loadmenu, "Character Menu", true))
+                            {
+                                case "VIEW ALL CHARACTERS":
+                                    Console.Clear();
+                                    Console.WriteLine("Saved Dinosaurs");
+                                    sb.Clear();
+                                    Console.WriteLine(sb.Append('-', 200));
+                                    func.ShowAllCharacters();
+                                    sb.Clear();
+                                    Console.WriteLine(sb.Append('-', 200));
                                     func.CodeEnd();
-                                    goto Start;
-                                }
-                                string name = func.DisplayNReadMethod(dino_save, "", false, 200);
-                                if (name == "Exit")
-                                {
-                                    goto Start;
-                                }
-                                Console.Write("Do you wish to select or delete this dinosaur?(view/delete): ");
-                                string select_delete = Console.ReadLine().ToLower();
-                                if (select_delete == "select")
-                                {
+                                    connection.Close();
+                                    goto Menu;
+                                case "VIEW A SPECIFIC CHARACTER":
+                                    int x = 0, y = 0;
+                                    string name = func.DisplayNReadMethod(dino_save, "Saved Dinosaurs", true);
+                                    if (name == "EXIT")
+                                    {
+                                        reader.Close();
+                                        connection.Close();
+                                        goto Menu;
+                                    }
                                     query = "SELECT * FROM Dinosaur WHERE Name = '" + name + "'";
                                     command = new MySqlCommand(query, connection);
                                     command.ExecuteNonQuery();
@@ -134,15 +139,23 @@ namespace DinoPetCharCreation
                                     Console.Clear();
                                     for (int i = 0; i < reader.FieldCount; i++)
                                     {
-                                        Console.WriteLine($"{reader.GetName(i)}: {reader.GetValue(i)}");
+                                        Console.Write($"{reader.GetName(i)}");
+                                        Console.SetCursorPosition(x + 15, y);
+                                        Console.WriteLine($"{reader.GetValue(i)}");
+                                        y++;
                                     }
                                     reader.Close();
                                     connection.Close();
                                     func.CodeEnd();
-                                    goto Start;
-                                }
-                                else if (select_delete == "delete")
-                                {
+                                    goto Menu;
+                                case "DELETE A SPECIFIC CHARACTER":
+                                    name = func.DisplayNReadMethod(dino_save, "Saved Dinosaurs", true);
+                                    if (name == "EXIT")
+                                    {
+                                        reader.Close();
+                                        connection.Close();
+                                        goto Menu;
+                                    }
                                     delete_build:
                                     Console.Write("Are you sure you wish to delete this dinosaur?(yes/no): ");
                                     switch (Console.ReadLine().ToLower())
@@ -151,33 +164,27 @@ namespace DinoPetCharCreation
                                             query = "DELETE FROM Dinosaur WHERE Name = '" + name + "'";
                                             command = new MySqlCommand(query, connection);
                                             command.ExecuteNonQuery();
-                                            Console.WriteLine("Successfully deleted dinosaur");
+                                            Console.WriteLine("\nSuccessfully deleted dinosaur");
                                             connection.Close();
                                             func.CodeEnd();
-                                            goto Start;
+                                            goto Menu;
                                         case "no":
-                                            goto Start;
+                                            connection.Close();
+                                            goto Menu;
                                         default:
                                             Console.WriteLine("Wrong input");
-                                            repeat = true;
                                             goto delete_build;
-                                        
                                     }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Wrong input");
-                                    Thread.Sleep(1000);
-                                    repeat = true;
-                                }
-                            } while (repeat);
+                                case "GO BACK TO MAIN MENU":
+                                     goto Start;
+                            }
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine("An error occured" + ex.Message);
                         }
                     }
-                    goto Start;
+                    break;
                 case "CAMPAIGN MODE":
                     func.showgamestory();
                     func.CodeEnd();

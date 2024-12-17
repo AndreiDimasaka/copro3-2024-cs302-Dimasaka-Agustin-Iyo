@@ -57,55 +57,6 @@ public class Methods
 
             return "";
         }
-    public string DisplayNReadMethod(Dictionary<int, string> dict, string edit, bool clear, int line)
-    {
-        bool error = false;
-        do{ 
-            error = false;
-            
-            if (clear)
-            {
-                Console.Clear();
-            }
-            Console.WriteLine(edit);
-            sb.Clear();
-            Console.WriteLine(sb.Append('-', line));
-            foreach (KeyValuePair<int, string> kvp in dict)
-            {
-                Console.WriteLine($"[{kvp.Key}]: {kvp.Value}");
-            }
-            try
-            {
-                Console.Write("Choose an option: ");
-                dict.TryGetValue(int.Parse(Console.ReadLine() ?? throw new InvalidOperationException()), out var value);
-                return value ?? throw new InvalidOperationException();
-            }
-            catch (IndexOutOfRangeException e)
-
-            {
-                Console.Clear();
-                Console.WriteLine("Invalid input. Try again.");
-                CodeEnd();
-                error = true;
-            }
-            catch (FormatException e)
-            {
-                Console.Clear();
-                Console.WriteLine("Invalid input. Try again.");
-                CodeEnd();
-                error = true;
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.Clear();
-                Console.WriteLine("Invalid input. Try again.");
-                CodeEnd();
-                error = true;
-            }
-        }while (error);
-
-        return "";
-    }
 
     public string DisplayNReadMethod( Dictionary<string, List<(string habitat, string dinosaurType)>> dict, string era, string habitat, string modify)
     {
