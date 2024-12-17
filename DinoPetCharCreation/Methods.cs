@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
 
 namespace DinoPetCharCreation;
 
@@ -7,13 +8,16 @@ public class Methods
 {
     
     static StringBuilder sb = new StringBuilder();
-    public string DisplayNReadMethod(Dictionary<int, string> dict, string edit)
+    public string DisplayNReadMethod(Dictionary<int, string> dict, string edit, bool clear)
     {
         bool error = false;
             do{ 
                 error = false;
-
-            Console.Clear();
+            
+            if (clear)
+            {
+                Console.Clear();
+            }
             Console.WriteLine(edit);
             sb.Clear();
             Console.WriteLine(sb.Append('-', 32));
@@ -53,6 +57,55 @@ public class Methods
 
             return "";
         }
+    public string DisplayNReadMethod(Dictionary<int, string> dict, string edit, bool clear, int line)
+    {
+        bool error = false;
+        do{ 
+            error = false;
+            
+            if (clear)
+            {
+                Console.Clear();
+            }
+            Console.WriteLine(edit);
+            sb.Clear();
+            Console.WriteLine(sb.Append('-', line));
+            foreach (KeyValuePair<int, string> kvp in dict)
+            {
+                Console.WriteLine($"[{kvp.Key}]: {kvp.Value}");
+            }
+            try
+            {
+                Console.Write("Choose an option: ");
+                dict.TryGetValue(int.Parse(Console.ReadLine() ?? throw new InvalidOperationException()), out var value);
+                return value ?? throw new InvalidOperationException();
+            }
+            catch (IndexOutOfRangeException e)
+
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid input. Try again.");
+                CodeEnd();
+                error = true;
+            }
+            catch (FormatException e)
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid input. Try again.");
+                CodeEnd();
+                error = true;
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid input. Try again.");
+                CodeEnd();
+                error = true;
+            }
+        }while (error);
+
+        return "";
+    }
 
     public string DisplayNReadMethod( Dictionary<string, List<(string habitat, string dinosaurType)>> dict, string era, string habitat, string modify)
     {
@@ -67,40 +120,69 @@ public class Methods
                 number++;
             }
         }
-        return DisplayNReadMethod(dinos, modify);
+        return DisplayNReadMethod(dinos, modify, true);
     }
 
     public string NameCheck(string modify)
     {
         Console.Clear();
         bool repeat = false;
+        string dino_name = "";
         Regex rg = new Regex(@"^[a-zA-Z0-9]{6,20}$");
-        do
+        string connectorString =
+            "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = None;";
+        using (var connection = new MySqlConnection(connectorString))
         {
-            try
+            connection.Open();
+            string query = "SELECT Name FROM Dinosaur";
+            MySqlCommand command = new MySqlCommand(query, connection);
+            command.ExecuteNonQuery();
+            do
             {
-                Console.Write($"{modify}: ");
-                string name = Console.ReadLine() ?? throw new InvalidOperationException();
-                if (rg.IsMatch(name))
+                try
                 {
-                    return name;
+                    repeat = false;
+                    Console.Write($"{modify}: ");
+                    dino_name = Console.ReadLine();
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (rg.IsMatch(dino_name))
+                    {
+                        while (reader.Read())
+                        {
+                            string saved_name = reader.GetString(0);
+                            if (saved_name.Equals(dino_name, StringComparison.OrdinalIgnoreCase))
+                            {
+                                Console.WriteLine("Name already taken. Try again.");
+                                repeat = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Minimum of 6 characters and maximum of 20 characters. Letters and Numbers only");
+                        repeat = true;
+                    }
+                    reader.Close();
                 }
-                else
+                catch (InvalidOperationException e)
                 {
-                    Console.WriteLine("Minimum of 6 characters and maximum of 20 characters. Letters and Numbers only");
+                    Console.WriteLine("Invalid input. Try again.");
                     repeat = true;
                 }
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine("Invalid input. Try again.");
-                repeat = true;
-            }
-        }while (repeat);
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occured" + e.Message);
+                    repeat = true;
+                }
 
-        return "";
+            } while (repeat) ;
+        } 
+        return dino_name;
     }
 
+
+    
     public void CodeEnd()
     {
         Console.WriteLine();
@@ -119,6 +201,56 @@ public class Methods
             }
         }
         return "";
+    }
+
+    public void ShowAllCharacters()
+    {
+        string connectorString =
+            "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = REQUIRED;";
+        try
+        {
+            using (var connection = new MySqlConnection(connectorString))
+            {
+                int x = 0, y = 2;
+                connection.Open();
+                string query = "SELECT * FROM Dinosaur";
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                MySqlDataReader reader = command.ExecuteReader();
+                reader.Read();
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write($"{reader.GetName(i)}");
+                    Console.SetCursorPosition(x + 20, y);
+                    Console.WriteLine($" {reader.GetValue(i)}");
+                    y++;
+                }
+
+                while (reader.Read())
+                {
+                    x += 20;
+                    y = 2;
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        Console.SetCursorPosition(x + 20, y);
+                        Console.WriteLine($"{reader.GetValue(i)}");
+                        y++;
+                    }
+                }
+                reader.Close();
+                connection.Close();
+            }
+        }
+        catch (MySqlException e)
+        {
+            Console.WriteLine(e);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Console.ReadKey();
+        }
     }
 
     public void showgamestory()

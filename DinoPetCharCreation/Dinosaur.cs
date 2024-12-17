@@ -194,7 +194,6 @@ public class Dinosaur : DinoBuilder,DinoBuild
         { "Dexterity", 0 },
         { "Toughness", 0 }
     };
-        Console.Clear();
         bool repeat1 = false;
         int add = 0;
         int total = 0;
@@ -218,10 +217,6 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     {
                         Console.WriteLine("You can only allocate below 20 and above 0. Try again.\n");
                         repeat1 = true;
-                    }
-                    else if (total == 40)
-                    {
-                        repeat1 = false;
                     }
                     else
                     { 
@@ -248,6 +243,12 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     repeat1 = true;
                 }
             } while (repeat1);
+            if (total == 40)
+            {
+                Console.WriteLine("\nNo more remaining points.");
+                Thread.Sleep(2000);
+                break;
+            }
         }
         foreach (KeyValuePair<string, int> elem2 in traits)
         {

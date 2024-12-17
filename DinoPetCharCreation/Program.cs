@@ -17,23 +17,23 @@ namespace DinoPetCharCreation
             Dinosaur dino = new Dinosaur();
             StringBuilder sb = new StringBuilder();
             Start:
-            switch (func.DisplayNReadMethod(data.menu, "Welcome to DinoPetCharCreation"))
+            switch (func.DisplayNReadMethod(data.menu, "Welcome to DinoPetCharCreation", true))
             {
                 case "NEW GAME":
-                    dino.Era = func.DisplayNReadMethod(data.era, "Choose an era");
-                    dino.Habitat = func.DisplayNReadMethod(data.habitat, "Choose a habitat for you dinosaur");
+                    dino.Era = func.DisplayNReadMethod(data.era, "Choose an era", true);
+                    dino.Habitat = func.DisplayNReadMethod(data.habitat, "Choose a habitat for you dinosaur", true);
                     dino.Breed = func.DisplayNReadMethod(data.breed, dino.Era, dino.Habitat, "Choose a dinosaur breed");
                     dino.FavoriteFood = func.FavoriteFoodGet(data.favoritefood, dino.Breed);
-                    dino.Gender = func.DisplayNReadMethod(data.gender, "Choose a gender for you dinosaur");
-                    dino.Nature = func.DisplayNReadMethod(data.nature, "Choose a nature for you dinosaur");
-                    dino.SkinColor = func.DisplayNReadMethod(data.skincolor, "Choose a skin color");
-                    dino.SkinPattern = func.DisplayNReadMethod(data.skinpattern, "Choose a skin pattern");
-                    dino.SkinTexture = func.DisplayNReadMethod(data.skintexture, "Choose a skintexture");
-                    dino.BodyFeatures = func.DisplayNReadMethod(data.bodyfeatures, "Choose a body feature");
+                    dino.Gender = func.DisplayNReadMethod(data.gender, "Choose a gender for you dinosaur", true);
+                    dino.Nature = func.DisplayNReadMethod(data.nature, "Choose a nature for you dinosaur", true);
+                    dino.SkinColor = func.DisplayNReadMethod(data.skincolor, "Choose a skin color", true);
+                    dino.SkinPattern = func.DisplayNReadMethod(data.skinpattern, "Choose a skin pattern", true);
+                    dino.SkinTexture = func.DisplayNReadMethod(data.skintexture, "Choose a skintexture", true);
+                    dino.BodyFeatures = func.DisplayNReadMethod(data.bodyfeatures, "Choose a body feature", true);
                     dino.ExtraFeature();
-                    dino.FacialFeatures = func.DisplayNReadMethod(data.facialfeatures, "Choose a facial feature");
-                    dino.TailType = func.DisplayNReadMethod(data.tailtype, "Choose a tail type");
-                    dino.Behavior = func.DisplayNReadMethod(data.behavior, "Choose a behavior");
+                    dino.FacialFeatures = func.DisplayNReadMethod(data.facialfeatures, "Choose a facial feature", true);
+                    dino.TailType = func.DisplayNReadMethod(data.tailtype, "Choose a tail type", true);
+                    dino.Behavior = func.DisplayNReadMethod(data.behavior, "Choose a behavior", true);
                     dino.Name = func.NameCheck("Name your dinosaur");
                     dino.TraitsAmount();
                     Build:
@@ -44,14 +44,14 @@ namespace DinoPetCharCreation
                     {
                         dino.BuildDinosaur();
                         string connectionString =
-                            "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = none;";
+                            "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = none;";
                         using (var connection = new MySqlConnection(connectionString))
                         {
                             try
                             {
                                 connection.Open();
                                 string query =
-                                    "INSERT INTO Dinosaur(Name, era, habitat, breed, FavoriteFood, Gender, Nature, SkinColor, SkinPattern, SkinTexture, BodyFeatures, ExtraFeatures, FacialFeatures, TailType, Behavior, Speed, Strength, Intelligence, Dexterity, Toughness, HasWing, HasFins, HasClaw) VALUES ('" +
+                                    "INSERT INTO Dinosaur(Name, Era, Habitat, Breed, FavFood, Gender, Nature, Color,Pattern,Texture, BodyFeatures, ExtraFeatures, FaceFeatures, Tail, Behavior, Speed, Strength, Intelligence, Dexterity, Toughness, Wing, Fins, Claw) VALUES ('" +
                                     dino.Name + "', '" + dino.Era + "', '" + dino.Habitat + "', '" + dino.Breed +
                                     "', '" + dino.FavoriteFood + "', '" + dino.Gender + "', '" + dino.Nature + "', '" +
                                     dino.SkinColor + "', '" + dino.SkinPattern + "', '" + dino.SkinTexture + "', '" +
@@ -82,22 +82,29 @@ namespace DinoPetCharCreation
 
                     break;
                 case "LOAD GAME":
+                    Console.Clear();
+                    Console.WriteLine("Saved Dinosaurs");
+                    sb.Clear();
+                    Console.WriteLine(sb.Append('-', 200));
+                    func.ShowAllCharacters();
                     string connectorString =
-                        "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = REQUIRED;";
+                        "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = REQUIRED;";
                     using (var connection = new MySqlConnection(connectorString))
                     {
                         try
                         {
-                            Console.Clear();
                             connection.Open();
-                            Dictionary<int, string> dino_save = new Dictionary<int, string>();
+                            Dictionary<int, string> dino_save = new Dictionary<int, string>()
+                            {
+                                { 0, "Exit" }
+                            };
                             string query = "SELECT * FROM Dinosaur";
                             MySqlCommand command = new MySqlCommand(query, connection);
                             command.ExecuteNonQuery();
                             MySqlDataReader reader = command.ExecuteReader();
                             while(reader.Read())
                             {
-                                dino_save.Add(dino_save.Count + 1, reader.GetString(0));
+                                dino_save.Add(dino_save.Count, reader.GetString(0));
                             }
                             reader.Close();
                             bool repeat = false;
@@ -110,8 +117,12 @@ namespace DinoPetCharCreation
                                     func.CodeEnd();
                                     goto Start;
                                 }
-                                string name = func.DisplayNReadMethod(dino_save, "Saved Dinosaur");
-                                Console.Write("Do you wish to select or delete this dinosaur?(select/delete): ");
+                                string name = func.DisplayNReadMethod(dino_save, "", false, 200);
+                                if (name == "Exit")
+                                {
+                                    goto Start;
+                                }
+                                Console.Write("Do you wish to select or delete this dinosaur?(view/delete): ");
                                 string select_delete = Console.ReadLine().ToLower();
                                 if (select_delete == "select")
                                 {
@@ -132,24 +143,32 @@ namespace DinoPetCharCreation
                                 }
                                 else if (select_delete == "delete")
                                 {
-                                    query = "DELETE FROM Dinosaur WHERE Name = '" + name + "'";
-                                    command = new MySqlCommand(query, connection);
-                                    command.ExecuteNonQuery();
-                                    Console.WriteLine("Successfully deleted dinosaur");
-                                    connection.Close();
-                                    func.CodeEnd();
-                                    goto Start;
+                                    delete_build:
+                                    Console.Write("Are you sure you wish to delete this dinosaur?(yes/no): ");
+                                    switch (Console.ReadLine().ToLower())
+                                    {
+                                        case "yes":
+                                            query = "DELETE FROM Dinosaur WHERE Name = '" + name + "'";
+                                            command = new MySqlCommand(query, connection);
+                                            command.ExecuteNonQuery();
+                                            Console.WriteLine("Successfully deleted dinosaur");
+                                            connection.Close();
+                                            func.CodeEnd();
+                                            goto Start;
+                                        case "no":
+                                            goto Start;
+                                        default:
+                                            Console.WriteLine("Wrong input");
+                                            repeat = true;
+                                            goto delete_build;
+                                        
+                                    }
                                 }
                                 else
                                 {
                                     Console.WriteLine("Wrong input");
-                                    Console.WriteLine("Do you wish to go back to the menu? (y/n)");
-                                    string back = Console.ReadLine();
-                                    if (back.ToLower() == "y")
-                                    {
-                                        func.CodeEnd();
-                                        goto Start;
-                                    }
+                                    Thread.Sleep(1000);
+                                    repeat = true;
                                 }
                             } while (repeat);
                         }
@@ -168,6 +187,7 @@ namespace DinoPetCharCreation
                     func.CodeEnd();
                     goto Start;
                 case "EXIT":
+                    Console.Clear();
                     Console.WriteLine("Successfully exited DinoPetCharCreation");
                     break;
             }
