@@ -44,7 +44,7 @@ namespace DinoPetCharCreation
                     {
                         dino.BuildDinosaur();
                         string connectionString =
-                            "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = none;";
+                            "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = none;";
                         using (var connection = new MySqlConnection(connectionString))
                         {
                             try
@@ -65,6 +65,7 @@ namespace DinoPetCharCreation
                                 goto Start;
                             }
                             catch (Exception ex)
+                                
                             {
                                 Console.WriteLine("An error occured" + ex.Message);
                             }
@@ -75,7 +76,7 @@ namespace DinoPetCharCreation
                         goto Start;
                     }
                     else
-                    {
+                    { 
                         Console.WriteLine("Wrong input");
                         goto Build;
                     }
@@ -83,7 +84,7 @@ namespace DinoPetCharCreation
                     break;
                 case "LOAD GAME":
                     string connectorString =
-                        "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = REQUIRED;";
+                        "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = REQUIRED;";
                     using (var connection = new MySqlConnection(connectorString))
                     {
                         try

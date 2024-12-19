@@ -81,7 +81,7 @@ public class Methods
         string dino_name = "";
         Regex rg = new Regex(@"^[a-zA-Z0-9]{6,20}$");
         string connectorString =
-            "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = None;";
+            "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = None;";
         using (var connection = new MySqlConnection(connectorString))
         {
             connection.Open();
@@ -157,12 +157,13 @@ public class Methods
     public void ShowAllCharacters()
     {
         string connectorString =
-            "server= localhost; database = charcreation; user id = root; password = 1234; SslMode = REQUIRED;";
+            "server= localhost; database = dinocharcreation; user id = root; password = 1234; SslMode = REQUIRED;";
         try
         {
             using (var connection = new MySqlConnection(connectorString))
             {
-                int x = 0, y = 2;
+                Console.SetBufferSize(1000, 1000);
+                int x = 0, y = 3;
                 connection.Open();
                 string query = "SELECT * FROM Dinosaur";
                 MySqlCommand command = new MySqlCommand(query, connection);
@@ -181,7 +182,7 @@ public class Methods
                 while (reader.Read())
                 {
                     x += 20;
-                    y = 2;
+                    y = 3; 
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
                         Console.SetCursorPosition(x + 20, y);

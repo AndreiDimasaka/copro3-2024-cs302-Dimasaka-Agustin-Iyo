@@ -211,9 +211,10 @@ public class Dinosaur : DinoBuilder,DinoBuild
                 {
                     repeat1 = false;
                     Console.WriteLine($"Remaining points {40 - total}");
-                    Console.Write($"{elem.Key}: ");
+                    Console.Write($"{elem.Key}: "); 
                     add = int.Parse(Console.ReadLine());
                     if (add < 0 | add > 20)
+                        
                     {
                         Console.WriteLine("You can only allocate below 20 and above 0. Try again.\n");
                         repeat1 = true;
@@ -221,7 +222,6 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     else
                     { 
                         total += add;
-                        traits[elem.Key] = traits[elem.Key] + add;
                         if (total > 40)
                         {
                             Console.WriteLine("You exceeded 40 points. Try again.\n");
@@ -231,18 +231,18 @@ public class Dinosaur : DinoBuilder,DinoBuild
                     }
                 }
                 catch (FormatException)
-                {
-                    total -= add;
-                    Console.WriteLine("Invalid input. Try again.");
+                {   
+                    Console.WriteLine("Invalid input. Try again.\n");
                     repeat1 = true;
                 }
                 catch (InvalidCastException)
                 {
-                    total -= add;
-                    Console.WriteLine("Invalid input. Try again.");
+                    Console.WriteLine("Invalid input. Try again.\n");
                     repeat1 = true;
+                        
                 }
             } while (repeat1);
+            traits[elem.Key] = traits[elem.Key] + add;
             if (total == 40)
             {
                 Console.WriteLine("\nNo more remaining points.");
